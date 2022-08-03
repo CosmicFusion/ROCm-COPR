@@ -9,7 +9,9 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_LLVM_GIT https://github.com/RadeonOpenCompute/llvm-project
 
-
+# TEMP DEV ENTRY #
+BuildRequires: tree
+##################
 
 BuildRequires: clang
 BuildRequires: ninja-build
@@ -91,6 +93,10 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 
 echo /opt/rocm/llvm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
+
+# TEMP DEV ENTRY #
+tree %{buildroot}
+##################
 
 
 %post
