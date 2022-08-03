@@ -49,12 +49,21 @@ Source2: rocclr-gfx803.patch
 
 %build
 
-wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-opencl-runtime/rocclr-gfx803.patch
+# Make basic structure
 
 mkdir -p %{ROCM_GIT_DIR}
 
 mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
+
+# level 1 : GIT Clone
+
+cd  %{ROCM_GIT_DIR}
+
+
+
+
+cd ../../../
 
  ls
