@@ -81,7 +81,8 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
         -DLLVM_BUILD_TESTS=OFF \
         -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
         -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-        -DLLVM_BINUTILS_INCDIR=/usr/include
+        -DLLVM_BINUTILS_INCDIR=/usr/include \
+        %{ROCM_GIT_DIR}/llvm-project
     make -j$(nproc)
 
 # Level 4 : Package
