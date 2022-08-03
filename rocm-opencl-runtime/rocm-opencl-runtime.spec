@@ -123,6 +123,7 @@ echo /opt/rocm/opencl/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 %{ROCM_INSTALL_DIR}/opencl/lib/libOpenCL.so.1.2
 %{ROCM_INSTALL_DIR}/opencl/share/doc/opencl/LICENSE*
 %{ROCM_INSTALL_DIR}/opencl/share/doc/rocm-ocl-icd/LICENSE*
+/etc/ld.so.conf.d/10-rocm-opencl.conf
 /etc/OpenCL/vendors/amdocl64.icd
 %exclude /src
 
