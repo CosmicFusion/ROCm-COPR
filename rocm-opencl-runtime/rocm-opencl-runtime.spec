@@ -20,6 +20,7 @@ BuildRequires: numactl
 BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
+BuildRequires: wget
 
 Provides:      rocm-opencl
 Provides:      rocm-opencl(x86-64)
@@ -48,9 +49,7 @@ Source2: rocclr-gfx803.patch
 
 %build
 
-#cp %{SOURCE2} .
-
-ls
+wget https://github.com/CosmicFusion/ROCm-COPR/raw/main/rocm-opencl-runtime/%{SOURCE2}
 
 mkdir -p %{ROCM_GIT_DIR}
 
