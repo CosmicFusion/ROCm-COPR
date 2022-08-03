@@ -41,3 +41,13 @@ Summary:       ROCm Compiler Support
 
 %description
 ROCm Compiler Support
+
+%build
+
+# Make basic structure
+
+mkdir -p %{ROCM_GIT_DIR}
+
+mkdir -p %{ROCM_BUILD_DIR}
+
+mkdir -p %{ROCM_PATCH_DIR}
