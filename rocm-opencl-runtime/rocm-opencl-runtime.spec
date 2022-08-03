@@ -48,7 +48,9 @@ Source2: rocclr-gfx803.patch
 
 %build
 
-cp %{SOURCE2} .
+#cp %{SOURCE2} .
+
+ls
 
 mkdir -p %{ROCM_GIT_DIR}
 
