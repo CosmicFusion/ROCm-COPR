@@ -11,7 +11,7 @@
 
 
 
-BuildRequires: clang
+#BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
 BuildRequires: libglvnd-devel
@@ -38,7 +38,6 @@ Release:       copr.%{fedora}
 License:       Apache 2.0 + LLVM
 Group:         System Environment/Libraries
 Summary:       ROCm Compiler Support
-
 
 %description
 ROCm Compiler Support
@@ -81,7 +80,7 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
         -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
         -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
         -DLLVM_BINUTILS_INCDIR=/usr/include
-    make
+    make -j$(nproc)
 
 # Level 4 : Package
 
@@ -92,8 +91,6 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 
 echo /opt/rocm/llvm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
-
-#%files
 
 
 %post
