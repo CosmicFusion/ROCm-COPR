@@ -49,7 +49,7 @@ Source2: rocclr-gfx803.patch
 
 %build
 
-wget https://github.com/CosmicFusion/ROCm-COPR/raw/main/rocm-opencl-runtime/%{SOURCE2}
+wget https://github.com/CosmicFusion/ROCm-COPR/raw/main/rocm-opencl-runtime/"%{SOURCE2}"
 
 mkdir -p %{ROCM_GIT_DIR}
 
