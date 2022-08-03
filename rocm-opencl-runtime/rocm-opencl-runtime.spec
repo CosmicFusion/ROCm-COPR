@@ -13,7 +13,7 @@
 
 
 
-
+BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
 BuildRequires: libglvnd-devel
