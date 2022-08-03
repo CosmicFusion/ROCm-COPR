@@ -87,7 +87,7 @@ cmake \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/opencl" \
     -Dhsa-runtime64_DIR=%{ROCM_INSTALL_DIR}/lib/cmake/hsa-runtime64 \
     %{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime
-    make
+    make -j$(nproc)
 
 # Level 4 : Package
 
