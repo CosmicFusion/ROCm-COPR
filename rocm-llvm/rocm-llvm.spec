@@ -69,7 +69,7 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
 
     cmake -S "%{ROCM_GIT_DIR}/llvm-project"  \
          -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
-		-DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
+         -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
         -DLLVM_HOST_TRIPLE=$CHOST \
         -DLLVM_BUILD_UTILS=ON \
         -DLLVM_ENABLE_BINDINGS=OFF \
