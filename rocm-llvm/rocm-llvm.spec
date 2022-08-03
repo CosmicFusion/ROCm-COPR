@@ -69,7 +69,7 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 
-    cmake -S llvm  \
+    cmake -S "%{ROCM_GIT_DIR}/llvm-project/llvm"  \
          -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
          -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
         -DLLVM_HOST_TRIPLE=$CHOST \
@@ -81,8 +81,7 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
         -DLLVM_BUILD_TESTS=OFF \
         -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
         -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-        -DLLVM_BINUTILS_INCDIR=/usr/include \
-        %{ROCM_GIT_DIR}/llvm-project
+        -DLLVM_BINUTILS_INCDIR=/usr/include
     make -j$(nproc)
 
 # Level 4 : Package
