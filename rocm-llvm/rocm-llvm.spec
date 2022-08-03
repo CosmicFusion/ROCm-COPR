@@ -7,37 +7,40 @@
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
-%global ROCCLR_GIT https://github.com/ROCm-Developer-Tools/ROCclr.git
-%global ROCM_OCL_GIT https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime.git
-%global ROCM_PATCH_1 rocclr-gfx803.patch
+%global ROCM_LLVM_GIT https://github.com/RadeonOpenCompute/llvm-project
 
 
+
+BuildRequires: clang
+BuildRequires: ninja-build
+BuildRequires: cmake
+BuildRequires: libglvnd-devel
+BuildRequires: numactl-devel
+BuildRequires: numactl
+BuildRequires: python3
+BuildRequires: git
+BuildRequires: python3-devel
 BuildRequires: wget
 
-Requires:      libc.so.6()(64bit)
-Requires:      libc.so.6(GLIBC_2.2.5)(64bit)
-Requires:      libgcc_s.so.1()(64bit)
-Requires:      libm.so.6()(64bit)
-Requires:      librocm-core.so.1()(64bit)
-Requires:      libstdc++.so.6()(64bit)
-
-Provides:      librocm-core.so.1()(64bit)
-Provides:      rocm-core
-Provides:      rocm-core(x86-64)
+Provides:      rocm-llvm
+Provides:      rocm-llvm(x86-64)
+Provides:      llvm-amdgpu
+Provides:      llvm-amdgpu(x86-64)
+Requires:      rocm-core
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocm-core
+Name:          rocm-llvm
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr.%{fedora}
-License:       MIT and ASL 2.0
+License:       Apache 2.0
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute (ROCm) Runtime software stack
+Summary:       ROCm Compiler Support
 
 %description
-Radeon Open Compute (ROCm) Runtime software stack
+ROCm Compiler Support
 
 %build
 
