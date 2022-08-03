@@ -72,11 +72,11 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
     cmake -S "%{ROCM_GIT_DIR}/llvm-project/llvm"  \
          -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
          -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
-        -DLLVM_BUILD_UTILS=ON \
-        -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
-        -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-        -DLLVM_ENABLE_ASSERTIONS=1 \
-        -DCMAKE_BUILD_TYPE=Release
+		 -DLLVM_BUILD_UTILS=ON \
+		 -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
+		 -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
+		 -DLLVM_ENABLE_ASSERTIONS=1 \
+		 -DCMAKE_BUILD_TYPE=Release
     make -j$(nproc)
 
 # Level 4 : Package
