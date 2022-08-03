@@ -39,6 +39,7 @@ License:       Apache 2.0 + LLVM
 Group:         System Environment/Libraries
 Summary:       ROCm Compiler Support
 
+
 %description
 ROCm Compiler Support
 
@@ -80,7 +81,7 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
         -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
         -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
         -DLLVM_BINUTILS_INCDIR=/usr/include
-    make -j$(nproc)
+    make
 
 # Level 4 : Package
 
