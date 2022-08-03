@@ -11,7 +11,7 @@
 
 
 
-
+#BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
 BuildRequires: libglvnd-devel
@@ -22,6 +22,12 @@ BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: wget
 
+Provides:      rocm-llvm
+Provides:      rocm-llvm(x86-64)
+Provides:      llvm-amdgpu
+Provides:      llvm-amdgpu(x86-64)
+Requires:	   rocm-core
+
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
@@ -29,62 +35,9 @@ BuildArch:     x86_64
 Name:          rocm-llvm
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr.%{fedora}
-License:       MIT and ASL 2.0
+License:       Apache 2.0 + LLVM
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - OpenCL runtime
+Summary:       ROCm Compiler Support
 
 %description
- Radeon Open Compute - OpenCL runtime
-
-%build
-
-# Make basic structure
-
-mkdir -p %{buildroot}/src
-
-cd %{buildroot}/src
-
-
-# Level 1 : Get deb
-
-wget -r -nd --no-parent -A 'rocm-core*.deb' http://repo.radeon.com/rocm/apt/%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/pool/main/r/rocm-core/
-
-mv ./rocm-core* ./rocm-core.deb
-
-# Level 2 : Extract deb
-
-ar -x "rocm-core.deb"
-
-mv ./data* ./data-archive.tar.gz
-
-tar -xf data-archive.tar.gz
-
-# Level 3 : Package
-
-mv ./opt %{buildroot}
-
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-touch %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
-echo /opt/rocm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
-echo /opt/rocm/lib64 >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
-
-%files
-/etc/ld.so.conf.d/10-rocm-core.conf
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/CMakeFiles/rocm-core.dir
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so.1
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so.1.0.50201
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/rocmmod
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
-%exclude /src
-
-
-%post
-/sbin/ldconfig
-ln -s /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} /opt/rocm
-
-%postun
-/sbin/ldconfig
-rm -r /opt/rocm
+ROCm Compiler Support
