@@ -11,7 +11,7 @@
 
 
 
-BuildRequires: clang
+
 BuildRequires: ninja-build
 BuildRequires: cmake
 BuildRequires: libglvnd-devel
@@ -22,12 +22,6 @@ BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: wget
 
-Provides:      rocm-llvm
-Provides:      rocm-llvm(x86-64)
-Provides:      llvm-amdgpu
-Provides:      llvm-amdgpu(x86-64)
-Requires:      rocm-core
-
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
@@ -35,12 +29,12 @@ BuildArch:     x86_64
 Name:          rocm-llvm
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr.%{fedora}
-License:       Apache 2.0
+License:       MIT and ASL 2.0
 Group:         System Environment/Libraries
-Summary:       ROCm Compiler Support
+Summary:       Radeon Open Compute - OpenCL runtime
 
 %description
-ROCm Compiler Support
+ Radeon Open Compute - OpenCL runtime
 
 %build
 
