@@ -27,7 +27,7 @@ BuildRequires: wget
 Provides:      rocm-opencl
 Provides:      rocm-opencl(x86-64)
 Provides:      rocm-ocl-icd
-Provides:      rocm-ocl-icd
+Provides:      rocm-ocl-icd(x86-64)
 Requires:      comgr
 Requires:      hsa-rocr
 
