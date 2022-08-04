@@ -27,9 +27,11 @@ echo "link successful ." > %{buildroot}/opt/rocm/llvm/include/llvm/Support/.cxx-
 /opt/rocm/llvm/include/llvm/Support/.cxx-links
 
 %post
+echo "Linking"
 ln -s /usr/include/c++/*/cstddef  /opt/rocm/llvm/include/clang/Basic/cstddef
 ln -s /usr/include/c++/*/cstddef /opt/rocm/llvm/include/llvm/Support/cstddef
 
 %postun
+echo "Un-linking"
 rm /opt/rocm/llvm/include/clang/Basic/cstddef
 rm /opt/rocm/llvm/include/llvm/Support/cstddef
