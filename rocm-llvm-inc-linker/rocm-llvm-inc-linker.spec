@@ -1,3 +1,6 @@
+%global ROCM_MAJOR_VERSION 5
+%global ROCM_MINOR_VERSION 2
+%global ROCM_PATCH_VERSION 1
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 
 Requires:      libstdc++-devel
