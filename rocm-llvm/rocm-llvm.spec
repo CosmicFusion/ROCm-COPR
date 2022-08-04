@@ -69,20 +69,40 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 
-    cmake -S "%{ROCM_GIT_DIR}/llvm-project/llvm"  \
-    -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
+    #cmake -S "%{ROCM_GIT_DIR}/llvm-project/llvm"  \
+    #-DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
+    #-DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
+    #-DLLVM_INCLUDE_BENCHMARKS=OFF \
+    #-DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
+    #-DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
+    #-DLLVM_ENABLE_ASSERTIONS=1 \
+    #-DLLVM_BINUTILS_INCDIR=/usr/include
+
+    #make -j$(nproc)
+
+
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project/llvm" \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
+    -DLLVM_HOST_TRIPLE=x86_64 \
+    -DLLVM_BUILD_UTILS=ON \
+    -DLLVM_ENABLE_BINDINGS=OFF \
+    -DOCAMLFIND=NO \
+    -DLLVM_ENABLE_OCAMLDOC=OFF \
     -DLLVM_INCLUDE_BENCHMARKS=OFF \
+    -DLLVM_BUILD_TESTS=OFF \
     -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
     -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-    -DLLVM_ENABLE_ASSERTIONS=1 \
     -DLLVM_BINUTILS_INCDIR=/usr/include
+    ninja -j$(nproc)
 
-    make -j$(nproc)
+
 
 # Level 4 : Package
 
-DESTDIR=%{buildroot} make install
+#DESTDIR=%{buildroot} make install
+
+DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
