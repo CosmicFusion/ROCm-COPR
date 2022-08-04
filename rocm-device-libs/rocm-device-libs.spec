@@ -96,17 +96,16 @@ pushd .
 cd %{ROCM_BUILD_DIR}/rocm-device-libs
 
     CC=/opt/rocm/llvm/bin/clang \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-Device-Libs" \
+    cmake -S "%{ROCM_GIT_DIR}/ROCm-Device-Libs" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_DIR=/opt/rocm/llvm/lib/cmake/llvm
-    ninja -j$(nproc)
+    make -j$(nproc)
 
 
 
 # Level 4 : Package
 
-DESTDIR="%{buildroot}" ninja -j$(nproc) install
+DESTDIR="%{buildroot}" make -j$(nproc) install
 
 
 
