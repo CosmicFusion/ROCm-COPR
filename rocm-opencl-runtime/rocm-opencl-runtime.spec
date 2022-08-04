@@ -30,7 +30,7 @@ Provides:      rocm-ocl-icd
 Provides:      rocm-ocl-icd(x86-64)
 Requires:      comgr
 Requires:      hsa-rocr
-
+Requires:      rocm-core
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -75,7 +75,7 @@ wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-opencl-r
 
 cd %{ROCM_GIT_DIR}/ROCclr
 git reset --hard
-git apply %{ROCM_PATCH_DIR}/rocclr-gfx803.patch
+#git apply %{ROCM_PATCH_DIR}/rocclr-gfx803.patch
 
 
 # Level 3 : Build
