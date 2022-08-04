@@ -106,7 +106,7 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
-touch %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
+touch %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
 echo /opt/rocm/llvm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
