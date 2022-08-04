@@ -1,3 +1,5 @@
+%undefine _auto_set_build_flags
+
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 1
@@ -8,6 +10,8 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_LLVM_GIT https://github.com/RadeonOpenCompute/llvm-project
+
+%global toolchain clang
 
 # TEMP DEV ENTRY #
 BuildRequires: tree
