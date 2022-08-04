@@ -70,6 +70,10 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 echo /opt/rocm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 echo /opt/rocm/lib64 >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
+mkdir -p %{buildroot}/etc/profile.d
+touch %{buildroot}/etc/profile.d/ROC_CFG.sh
+echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/ROC_CFG.sh
+chmod +x %{buildroot}/etc/profile.d/ROC_CFG.sh
 
 %files
 /etc/ld.so.conf.d/10-rocm-core.conf
