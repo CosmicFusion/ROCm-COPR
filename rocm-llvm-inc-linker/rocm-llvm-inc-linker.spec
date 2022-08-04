@@ -36,7 +36,13 @@ echo "Linking"
 ln -s /usr/include/c++/*/cstddef  %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/cstddef
 ln -s /usr/include/c++/*/cstddef %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/cstddef
 
+ln -s /usr/include/c++/*/x86_64-redhat-linux/bits/c++config.h %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/c++config.h
+ln -s /usr/include/c++/*/x86_64-redhat-linux/bits/c++config.h %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/c++config.h
+
 %postun
 echo "Un-linking"
 rm %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/cstddef
 rm %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/cstddef
+
+rm %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/c++config.h
+rm %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/c++config.h
