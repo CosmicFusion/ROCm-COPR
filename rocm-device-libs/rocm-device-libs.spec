@@ -53,7 +53,7 @@ cd  %{ROCM_GIT_DIR}
 git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_RDL_GIT}"
 
 mkdir -p %{ROCM_BUILD_DIR}/rocm-device-libs
-cd %{ROCM_BUILD_DIR}/rocm-rocm-device-libs
+cd %{ROCM_BUILD_DIR}/rocm-device-libs
 pushd .
 
 
