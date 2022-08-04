@@ -1,3 +1,5 @@
+%global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+
 Requires:      libstdc++-devel
 Requires:      rocm-llvm
 
@@ -13,25 +15,25 @@ Summary:       links required files from system path to rocm-llvm path
 links required files from system path to rocm-llvm path
 
 %build
-mkdir -p %{buildroot}/opt/rocm/llvm/include/clang/Basic
-touch %{buildroot}/opt/rocm/llvm/include/clang/Basic/.cxx-links
-echo "link successful ." > %{buildroot}/opt/rocm/llvm/include/clang/Basic/.cxx-links
+mkdir -p %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/clang/Basic
+touch %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/.cxx-links
+echo "link successful ." > %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/.cxx-links
 
-mkdir -p %{buildroot}/opt/rocm/llvm/include/llvm/Support
-touch %{buildroot}/opt/rocm/llvm/include/llvm/Support/.cxx-links
-echo "link successful ." > %{buildroot}/opt/rocm/llvm/include/llvm/Support/.cxx-links
+mkdir -p %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/llvm/Support
+touch %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/.cxx-links
+echo "link successful ." > %{buildroot}/%{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/.cxx-links
 
 
 %files
-/opt/rocm/llvm/include/clang/Basic/.cxx-links
-/opt/rocm/llvm/include/llvm/Support/.cxx-links
+%{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/.cxx-links
+%{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/.cxx-links
 
 %post
 echo "Linking"
-ln -s /usr/include/c++/*/cstddef  /opt/rocm/llvm/include/clang/Basic/cstddef
-ln -s /usr/include/c++/*/cstddef /opt/rocm/llvm/include/llvm/Support/cstddef
+ln -s /usr/include/c++/*/cstddef  %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/cstddef
+ln -s /usr/include/c++/*/cstddef %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/cstddef
 
 %postun
 echo "Un-linking"
-rm /opt/rocm/llvm/include/clang/Basic/cstddef
-rm /opt/rocm/llvm/include/llvm/Support/cstddef
+rm %{ROCM_INSTALL_DIR}/llvm/include/clang/Basic/cstddef
+rm %{ROCM_INSTALL_DIR}/llvm/include/llvm/Support/cstddef
