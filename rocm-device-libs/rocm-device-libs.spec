@@ -12,9 +12,7 @@
 %global ROCM_RDL_GIT https://github.com/RadeonOpenCompute/ROCm-Device-Libs
 
 BuildRequires: rocm-llvm-inc-linker
-BuildRequires: boost-devel
 BuildRequires: libstdc++-devel
-BuildRequires: libcxx-devel
 BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
