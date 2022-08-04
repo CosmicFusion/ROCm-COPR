@@ -28,6 +28,24 @@ BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: wget
 BuildRequires: gcc-plugin-devel
+BuildRequires:	gcc
+BuildRequires:	gcc-c++
+BuildRequires:	clang
+BuildRequires:	cmake
+BuildRequires:	ninja-build
+BuildRequires:	zlib-devel
+BuildRequires:	libffi-devel
+BuildRequires:	ncurses-devel
+BuildRequires:	python3-psutil
+BuildRequires:	python3-sphinx
+BuildRequires:	python3-recommonmark
+BuildRequires:	multilib-rpm-config
+BuildRequires:	binutils-devel
+BuildRequires:	valgrind-devel
+BuildRequires:	libedit-devel
+BuildRequires:	python3-devel
+BuildRequires:	python3-setuptools
+BuildRequires:	gnupg2
 
 Provides:      rocm-llvm
 Provides:      rocm-llvm(x86-64)
