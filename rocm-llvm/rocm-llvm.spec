@@ -13,10 +13,6 @@
 
 %global toolchain clang
 
-# TEMP DEV ENTRY #
-BuildRequires: tree
-##################
-
 BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
@@ -92,18 +88,6 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 
-    #cmake -S "%{ROCM_GIT_DIR}/llvm-project/llvm"  \
-    #-DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm" \
-    #-DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
-    #-DLLVM_INCLUDE_BENCHMARKS=OFF \
-    #-DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
-    #-DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-    #-DLLVM_ENABLE_ASSERTIONS=1 \
-    #-DLLVM_BINUTILS_INCDIR=/usr/include
-
-    #make -j$(nproc)
-
-
     cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project/llvm" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
@@ -133,9 +117,10 @@ touch %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
 echo /opt/rocm/llvm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
-# TEMP DEV ENTRY #
-tree %{buildroot}
-##################
+%files
+/etc/ld.so.conf.d/*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/llvm/*
+%exclude /src
 
 
 %post
