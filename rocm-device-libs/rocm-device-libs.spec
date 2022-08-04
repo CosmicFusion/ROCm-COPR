@@ -11,6 +11,7 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_RDL_GIT https://github.com/RadeonOpenCompute/ROCm-Device-Libs
 
+BuildRequires: libcxx-devel
 BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
