@@ -71,7 +71,7 @@ pushd .
 # Level 2 : GFX8 PATCH
 
 cd %{ROCM_PATCH_DIR}
-wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-opencl-runtime/%{ROCM_PATCH_1}
+#wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-opencl-runtime/%{ROCM_PATCH_1}
 
 cd %{ROCM_GIT_DIR}/ROCclr
 git reset --hard
