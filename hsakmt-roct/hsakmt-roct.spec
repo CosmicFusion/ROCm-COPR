@@ -17,6 +17,10 @@ BuildRequires: numactl
 BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
+BuildRequires: libdrm
+BuildRequires: libdrm-devel
+BuildRequires: pciutils
+BuildRequires: pciutils-devel
 
 Provides:      hsakmt-roct
 Provides:      hsakmt-roct(x86-64)
