@@ -77,6 +77,7 @@ chmod +x %{buildroot}/etc/profile.d/ROC_CFG.sh
 
 %files
 /etc/ld.so.conf.d/10-rocm-core.conf
+/etc/profile.d/ROC_CFG.sh
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/CMakeFiles/rocm-core.dir
