@@ -23,6 +23,7 @@ BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: wget
+BuildRequires: gcc-plugin-devel
 
 Provides:      rocm-llvm
 Provides:      rocm-llvm(x86-64)
