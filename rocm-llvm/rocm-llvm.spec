@@ -58,10 +58,10 @@ Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 Release:       copr.%{fedora}
 License:       Apache 2.0 + LLVM
 Group:         System Environment/Libraries
-Summary:       ROCm Compiler Support
+Summary:       Radeon Open Compute - LLVM toolchain (llvm, clang, lld)
 
 %description
-ROCm Compiler Support
+Radeon Open Compute - LLVM toolchain (llvm, clang, lld)
 
 %build
 
