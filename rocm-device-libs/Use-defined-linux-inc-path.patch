@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index bfc0032..eab8e87 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,6 +12,7 @@ cmake_policy(SET CMP0011 NEW)
+ 
+ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+   include(CMakePackageConfigHelpers)
++  include_directories("/usr/include" "/usr/include/c++/12" "/usr/include/c++/12/x86_64-redhat-linux")
+   include(GNUInstallDirs)
+ 
+   find_package(ROCM)
