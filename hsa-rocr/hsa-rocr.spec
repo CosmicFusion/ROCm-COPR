@@ -20,8 +20,8 @@ BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: vim-common
-BuildRequires:      elfutils-libelf
-BuildRequires:      elfutils-libelf-devel
+BuildRequires: elfutils-libelf
+BuildRequires: elfutils-libelf-devel
 
 Provides:      hsa-rocr
 Provides:      hsa-rocr(x86-64)
@@ -31,7 +31,6 @@ Requires:      elfutils-libelf
 Requires:      hsakmt-roct
 Requires:      rocm-device-libs
 Requires:      rocm-core
-Requires:      hsa-amd-aqlprofile
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
