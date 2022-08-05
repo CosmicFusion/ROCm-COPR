@@ -1,3 +1,5 @@
+%undefine _auto_set_build_flags
+
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 1
@@ -9,10 +11,13 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_ROCMINFO_GIT https://github.com/RadeonOpenCompute/rocminfo
 
+%global toolchain clang
+
 BuildRequires: clang
 BuildRequires: rocm-cmake
 BuildRequires: ninja-build
 BuildRequires: cmake
+BuildRequires: libstdc++-devel
 BuildRequires: numactl-devel
 BuildRequires: pciutils-devel
 BuildRequires: python3
@@ -67,6 +72,7 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocminfo
 
+    CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocminfo" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
@@ -78,4 +84,8 @@ cd %{ROCM_BUILD_DIR}/rocminfo
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-#%files
+%files
+/opt/rocm-5.2.1/bin/rocm_agent_enumerator
+/opt/rocm-5.2.1/bin/rocminfo
+/opt/rocm-5.2.1/share/doc/rocminfo/License.txt
+%exclude /src
