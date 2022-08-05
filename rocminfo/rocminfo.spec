@@ -85,7 +85,7 @@ cd %{ROCM_BUILD_DIR}/rocminfo
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-/opt/rocm-5.2.1/bin/rocm_agent_enumerator
-/opt/rocm-5.2.1/bin/rocminfo
-/opt/rocm-5.2.1/share/doc/rocminfo/License.txt
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocm_agent_enumerator
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocminfo
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocminfo/License.txt
 %exclude /src
