@@ -14,7 +14,7 @@
 BuildRequires: rocm-llvm
 BuildRequires: rocm-cmake
 BuildRequires: ninja-build
-BuildRequires: clange
+BuildRequires: clang
 BuildRequires: cmake
 BuildRequires: numactl-devel
 BuildRequires: numactl
