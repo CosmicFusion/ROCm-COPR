@@ -32,6 +32,7 @@ Provides:      rocm_agent_enumerator(x86-64)
 Requires:      pciutils
 Requires:      hsa-rocr
 Requires:      python3
+Requires:	kmod
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -75,7 +76,8 @@ cd %{ROCM_BUILD_DIR}/rocminfo
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocminfo" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_LIBDIR=/%{_lib}
     ninja -j$(nproc)
 
 
