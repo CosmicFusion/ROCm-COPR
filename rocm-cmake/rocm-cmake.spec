@@ -9,6 +9,8 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_CMAKE_GIT https://github.com/RadeonOpenCompute/rocm-cmake
 
+%global toolchain clang
+
 BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
@@ -63,6 +65,7 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocm-cmake
 
+    CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
