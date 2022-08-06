@@ -88,6 +88,8 @@ cd %{ROCM_BUILD_DIR}/rocminfo
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
+rm -Rf %{buildroot}%{_libdir}/.build-id
+
 %files
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocm_agent_enumerator
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocminfo
