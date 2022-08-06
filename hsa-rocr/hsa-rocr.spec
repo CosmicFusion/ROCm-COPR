@@ -26,6 +26,7 @@ BuildRequires: vim-common
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: hsakmt-roct
+BuildRequires: hsakmt
 
 Provides:      hsa-rocr
 Provides:      hsa-rocr(x86-64)
