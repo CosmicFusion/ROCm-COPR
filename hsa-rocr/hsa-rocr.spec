@@ -28,7 +28,7 @@ BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: hsakmt-roct
 BuildRequires:  rocm-device-libs
-BuildRequires: lindrm-devel
+BuildRequires: libdrm-devel
 BuildRequires: libdrm
 
 Provides:      hsa-rocr
