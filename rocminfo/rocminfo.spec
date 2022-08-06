@@ -31,6 +31,8 @@ Provides:      rocm_agent_enumerator
 Provides:      rocm_agent_enumerator(x86-64)
 Requires:      pciutils
 Requires:      hsa-rocr
+Requires:      rocm-device-libs
+Requires:      rocm-core
 Requires:      python3
 Requires:	kmod
 
