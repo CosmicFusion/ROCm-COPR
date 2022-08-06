@@ -1,4 +1,5 @@
 %undefine _auto_set_build_flags
+%define _build_id_links none
 
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
@@ -87,8 +88,6 @@ cd %{ROCM_BUILD_DIR}/rocminfo
 # Level 4 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
-
-rm -Rf %{buildroot}/lib/.build-id
 
 %files
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocm_agent_enumerator
