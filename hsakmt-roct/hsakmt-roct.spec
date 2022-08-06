@@ -42,10 +42,10 @@ Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 Release:       copr.%{fedora}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute Thunk Development Interface
+Summary:       Radeon Open Compute Thunk Interface
 
 %description
-Radeon Open Compute Thunk Development Interface
+Radeon Open Compute Thunk Interface
 
 %build
 
