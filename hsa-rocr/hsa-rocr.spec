@@ -18,6 +18,7 @@ BuildRequires: clang
 BuildRequires: cmake
 BuildRequires: numactl-devel
 BuildRequires: numactl
+BuildRequires: ncurses-devel
 BuildRequires: pciutils-devel
 BuildRequires: python3
 BuildRequires: git
