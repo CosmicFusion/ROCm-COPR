@@ -28,6 +28,8 @@ BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: hsakmt-roct
 BuildRequires:  rocm-device-libs
+BuildRequires: lindrm-devel
+BuildRequires: libdrm
 
 Provides:      hsa-rocr
 Provides:      hsa-rocr(x86-64)
@@ -39,6 +41,7 @@ Requires:      elfutils-libelf
 Requires:      hsakmt-roct
 Requires:      rocm-device-libs
 Requires:      rocm-core
+Requires:      libdrm
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
