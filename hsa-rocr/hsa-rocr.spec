@@ -80,7 +80,7 @@ cd %{ROCM_BUILD_DIR}/hsa-rocr
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCR-Runtime/src" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_CXX_FLAGS='-DNDEBUG' 
     ninja -j$(nproc)
 
 
@@ -106,12 +106,7 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ext_image.h
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ven_amd_aqlprofile.h
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ven_amd_loader.h
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64-config-version.cmake
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64-config.cmake
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64Targets-release.cmake
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64Targets.cmake
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime64.so
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime64.so.1
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime64.so.1.5.0
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64*
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime64*
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/hsa-runtime64/LICENSE.md
 %exclude /src
