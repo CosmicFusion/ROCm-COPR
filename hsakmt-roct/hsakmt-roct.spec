@@ -26,8 +26,8 @@ Provides:      hsakmt-roct
 Provides:      hsakmt-roct(x86-64)
 Provides:      roct-thunk-interface
 Provides:      roct-thunk-interface(x86-64)
-Provides:      hsakmt
-Provides:      hsakmt(x86-64)
+Provides:      hsakmt-devel
+Provides:      hsakmt-devel(x86-64)
 Requires:      libdrm
 Requires:      numactl
 Requires:      pciutils
@@ -45,7 +45,7 @@ Group:         System Environment/Libraries
 Summary:       Radeon Open Compute Thunk Interface
 
 %description
-Radeon Open Compute Thunk Interface
+Radeon Open Compute Thunk Development Interface
 
 %build
 
