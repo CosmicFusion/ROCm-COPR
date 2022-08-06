@@ -93,3 +93,4 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocminfo
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocminfo/License.txt
 %exclude /src
+%exclude /usr/lib/.build-id/f9
