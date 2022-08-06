@@ -9,9 +9,12 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_ROCR_GIT https://github.com/RadeonOpenCompute/ROCR-Runtime
 
+%global toolchain clang
+
 BuildRequires: rocm-llvm
 BuildRequires: rocm-cmake
 BuildRequires: ninja-build
+BuildRequires: clange
 BuildRequires: cmake
 BuildRequires: numactl-devel
 BuildRequires: numactl
@@ -71,6 +74,7 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/hsa-rocr
 
+    CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCR-Runtime/src" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
