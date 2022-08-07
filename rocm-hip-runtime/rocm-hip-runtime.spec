@@ -78,6 +78,7 @@ BuildRequires:	libedit-devel
 BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
 BuildRequires:	gnupg2
+BuildRequires:      comgr
 
 Requires:      elfutils-libelf
 Requires:      comgr
