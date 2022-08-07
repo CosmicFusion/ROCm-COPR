@@ -1,4 +1,5 @@
 %undefine _auto_set_build_flags
+%define _build_id_links none
 
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
