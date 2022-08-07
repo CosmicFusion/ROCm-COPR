@@ -179,7 +179,7 @@ cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd \
 -DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime \
 -DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr \
 -DHIP_PLATFORM=amd \
--DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
+#-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
 -B %{ROCM_BUILD_DIR}/rocm-hip-runtime
 
     ninja -j$(nproc)
