@@ -88,16 +88,16 @@ pushd .
 # Level 2 : Apply redhat path patch
 
 cd %{ROCM_PATCH_DIR}
-wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-device-libs/%{ROCM_PATCH_1}
+#wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-device-libs/%{ROCM_PATCH_1}
 cd %{ROCM_GIT_DIR}/ROCm-Device-Libs
 git reset --hard
-git apply %{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}
+#git apply %{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}
 
 # Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-device-libs
 
-    CC=/opt/rocm/llvm/bin/clang \
+    CC=/opt/rocm/llvm/bin/clang CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
     cmake -S "%{ROCM_GIT_DIR}/ROCm-Device-Libs" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DLLVM_DIR=/opt/rocm/llvm/lib/cmake/llvm
