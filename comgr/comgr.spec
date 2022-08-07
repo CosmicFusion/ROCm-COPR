@@ -27,6 +27,7 @@ BuildRequires: vim-common
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: zlib-devel
+BuildRequires:      rocm-device-libs
 
 Provides:      comgr
 Provides:      comgr(x86-64)
