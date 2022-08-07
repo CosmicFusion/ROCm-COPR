@@ -173,14 +173,13 @@ cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
 -DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP \
 -DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime \
 -DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr \
--DHIP_PLATFORM=amd \
+-DHIP_PLATFORM=amd
 #-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
--B %{ROCM_BUILD_DIR}/rocm-hip-runtime
 
     ninja -j$(nproc)
 
