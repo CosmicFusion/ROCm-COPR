@@ -278,9 +278,9 @@ cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime-devel/%{ROCM_PATCH_1}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime-devel/%{ROCM_PATCH_2}
 
-patch "/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipconfig.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+patch "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipconfig.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
-patch "/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipcc.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
+patch "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipcc.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
 
 cd %{buildroot}
 
