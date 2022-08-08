@@ -126,7 +126,7 @@ Requires: 	hipfort
 Requires: 	rocalution
 Requires:	rocthrust
 Requires: 	hipsparse
-#Requires:	hipfft
+Requires:	hipfft
 Requires:	clang
 Requires:	llvm-libs
 Requires:	libstdc++-devel
