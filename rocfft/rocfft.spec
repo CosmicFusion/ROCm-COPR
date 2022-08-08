@@ -61,6 +61,7 @@ BuildRequires:	gcc
 BuildRequires:	gcc-c++
 BuildRequires:	clang
 BuildRequires: rocminfo
+BuildRequires: comgr
 
 Provides:      rocfft
 Provides:      rocfft(x86-64)
