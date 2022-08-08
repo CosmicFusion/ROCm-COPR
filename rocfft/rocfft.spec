@@ -50,6 +50,7 @@ BuildRequires: elfutils-libelf-devel
 BuildRequires: rocm-llvm
 BuildRequires: rocm-core
 BuildRequires: rocm-hip-runtime-devel
+BuildRequires:      rocm-hip-runtime
 BuildRequires: hsakmt-roct
 BuildRequires: rocm-device-libs
 BuildRequires: libdrm-devel
