@@ -58,6 +58,7 @@ BuildRequires: gcc-plugin-devel
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
 BuildRequires:	clang
+BuildRequires: rocminfo
 
 Provides:      rocfft
 Provides:      rocfft(x86-64)
@@ -105,8 +106,7 @@ cd %{ROCM_BUILD_DIR}/rocfft
     CXXFLAGS="-fcf-protection=none" \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_CXX_COMPILER=%{ROCM_INSTALL_DIR}/bin/hipcc \
-    -DAMDGPU_TARGETS="$AMDGPU_TARGETS"
+    -DCMAKE_CXX_COMPILER=%{ROCM_INSTALL_DIR}/bin/hipcc 
 
     ninja -j$(nproc)
 
