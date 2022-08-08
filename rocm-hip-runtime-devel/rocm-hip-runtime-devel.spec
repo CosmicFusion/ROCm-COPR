@@ -112,21 +112,21 @@ BuildRequires:	python3-setuptools
 BuildRequires:	llvm-devel
 
 
-Requires:      rocsparse
-Requires:      rocprim
-Requires:      rocm-core
-Requires:      rocm-hip-runtime
-Requires:      hipcub
-Requires:      rocfft
-Requires:      rocrand
-Requires: 	hipblas
-Requires: 	rocprim
-Requires: 	rccl
-Requires: 	hipfort		
-Requires: 	rocalution
-Requires:	rocthrust
-Requires: 	hipsparse
-Requires:	hipfft
+Recommends:      rocsparse
+Recommends:      rocprim
+Recommends:      rocm-core
+Recommends:      rocm-hip-runtime
+Recommends:      hipcub
+Recommends:      rocfft
+Recommends:      rocrand
+Recommends: 	hipblas
+Recommends: 	rocprim
+Recommends: 	rccl
+Recommends: 	hipfort		
+Recommends: 	rocalution
+Recommends:	rocthrust
+Recommends: 	hipsparse
+Recommends:	hipfft
 Requires:	clang
 Requires:	llvm-libs
 Requires:	libstdc++-devel
