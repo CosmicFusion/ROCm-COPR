@@ -1,0 +1,11 @@
+--- hipconfig.pl	2022-08-07 21:44:48.000000000 +0300
++++ hipconfig-patched.pl	2022-08-08 14:42:51.616272499 +0300
+@@ -81,7 +81,7 @@
+     if($isWindows) {
+         $CPP_CONFIG .= " -I\"$HIP_PATH_INCLUDE\" -I\"$HIP_CLANG_INCLUDE\"";
+     } else {
+-        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include";
++        $CPP_CONFIG .= " -D_GNU_SOURCE -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include -isystem /usr/include/c++/12 -isystem  /usr/include/c++/12/x86_64-redhat-linux -isystem  /usr/include";
+     }
+ }
+ if ($HIP_PLATFORM eq "nvidia") {

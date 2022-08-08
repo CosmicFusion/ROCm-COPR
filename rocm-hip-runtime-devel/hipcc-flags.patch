@@ -1,0 +1,25 @@
+--- hipcc.pl	2022-08-07 21:44:48.000000000 +0300
++++ hipcc-patched.pl	2022-08-08 14:31:33.738501711 +0300
+@@ -186,10 +186,10 @@
+     if ($isWindows) {
+       $HIPCXXFLAGS .= " -std=c++14 -fms-extensions -fms-compatibility";
+     } else {
+-      $HIPCXXFLAGS .= " -std=c++11";
++      $HIPCXXFLAGS .= " -std=c++14 -fno-exceptions -D_GNU_SOURCE " ;
+     }
+-    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
+-    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
++    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" -isystem /usr/include/c++/12 -isystem  /usr/include/c++/12/x86_64-redhat-linux -isystem  /usr/include ";
++    $HIPCFLAGS .= "  -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux -isystem  /usr/include ";
+     $HIPLDFLAGS .= " -L\"$HIP_LIB_PATH\"";
+     if ($isWindows) {
+       $HIPLDFLAGS .= " -lamdhip64";
+@@ -201,7 +201,7 @@
+ 
+     if (not $isWindows) {
+         $HSA_PATH=$ENV{'HSA_PATH'} // "$ROCM_PATH/hsa";
+-        $HIPCXXFLAGS .= " -isystem $HSA_PATH/include";
++        $HIPCXXFLAGS .= " -isystem $HSA_PATH/include  ";
+         $HIPCFLAGS .= " -isystem $HSA_PATH/include";
+     }
+ 
