@@ -12,7 +12,6 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_ROCFFT_GIT https://github.com/ROCmSoftwarePlatform/rocFFT
-%global ROCM_COMGR_GIT https://github.com/RadeonOpenCompute/ROCm-CompilerSupport
 
 %global toolchain clang
 
@@ -96,7 +95,6 @@ mkdir -p %{ROCM_PATCH_DIR}
 cd  %{ROCM_GIT_DIR}
 
 git clone -b "%{ROCM_GIT_REL_TAG}" "%{ROCM_ROCFFT_GIT}"
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_COMGR_GIT}"
 
 mkdir -p %{ROCM_BUILD_DIR}/rocfft
 cd %{ROCM_BUILD_DIR}/rocfft
