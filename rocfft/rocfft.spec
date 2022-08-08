@@ -107,10 +107,12 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocfft
 
-     CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
-    -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DAMDGPU_TARGETS="$AMDGPU_TARGETS"
+     CC=/opt/rocm/bin/hipcc CXX=/opt/rocm/bin/hipcc / 
+     CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' /
+     CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' /
+     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
+     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
+     -DAMDGPU_TARGETS="$AMDGPU_TARGETS"
 
     ninja -j$(nproc)
 
