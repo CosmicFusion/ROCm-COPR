@@ -77,10 +77,10 @@ Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 Release:       copr.%{fedora}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - FFT implementation 
+Summary:       Radeon Open Compute - FFT implementation
 
 %description
-Radeon Open Compute - FFT implementation 
+Radeon Open Compute - FFT implementation
 
 %build
 
@@ -107,7 +107,7 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocfft
 
-     CC=/opt/rocm/bin/hipcc CXX=/opt/rocm/bin/hipcc \ 
+     CC=/opt/rocm/bin/hipcc CXX=/opt/rocm/bin/hipcc \
      CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
      CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
      cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
