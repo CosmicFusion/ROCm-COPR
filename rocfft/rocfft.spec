@@ -108,33 +108,9 @@ pushd .
 cd %{ROCM_BUILD_DIR}/rocfft
 
      CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-CompilerSupport/lib/comgr" \
-    -B build -Wno-dev \
-    -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
-    -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm;%{ROCM_INSTALL_DIR}"
-    cd ./build
-    ninja -j$(nproc)
-
-
-
-# Level 4 : Package
-
-DESTDIR="%{buildroot}" ninja -j$(nproc) install
-
-%files
-   /opt/rocm-5.2.1/include/amd_comgr.h
-   /opt/rocm-5.2.1/lib64/cmake/amd_comgr/amd_comgr*
-   /opt/rocm-5.2.1/lib64/libamd_comgr*
-   /opt/rocm-5.2.1/share/amd_comgr/LICENSE.txt
-   /opt/rocm-5.2.1/share/amd_comgr/NOTICES.txt
-   /opt/rocm-5.2.1/share/amd_comgr/README.md
-   /opt/rocm-5.2.1/share/doc/amd_comgr/comgr/LICENSE.txt
-
-%exclude /src
-
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    
+    -DAMDGPU_TARGETS="$AMDGPU_TARGETS"
 
     ninja -j$(nproc)
 
@@ -150,7 +126,7 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
 
-echo /opt/rocm/rocfft/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
+echo "/opt/rocm/rocfft/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
 
 %files
 /etc/ld.so.conf.d/*
