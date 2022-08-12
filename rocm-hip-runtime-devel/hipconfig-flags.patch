@@ -13,7 +13,7 @@
          $CPP_CONFIG .= " -I\"$HIP_PATH_INCLUDE\" -I\"$HIP_CLANG_INCLUDE\"";
      } else {
 -        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include";
-+        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include \"$HIP_ENV_CC_FLAGS\" ";
++        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include $HIP_ENV_CC_FLAGS\ ";
      }
  }
  if ($HIP_PLATFORM eq "nvidia") {
