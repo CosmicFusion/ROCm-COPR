@@ -15,8 +15,8 @@
      }
 -    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
 -    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
-+    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_ENV_CXX_FLAGS\" ";
-+    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_ENV_CC_FLAGS\" ";
++    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" $HIP_ENV_CXX_FLAGS\ ";
++    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" $HIP_ENV_CC_FLAGS\ ";
      $HIPLDFLAGS .= " -L\"$HIP_LIB_PATH\"";
      if ($isWindows) {
        $HIPLDFLAGS .= " -lamdhip64";
