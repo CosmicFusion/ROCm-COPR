@@ -15,6 +15,7 @@
 %global ROCM_HAMD_GIT https://github.com/ROCm-Developer-Tools/hipamd.git
 %global ROCM_PATCH_1 hipconfig-flags.patch
 %global ROCM_PATCH_2 hipcc-flags.patch
+%global ROCM_PATCH_3 hipvars-flags.patch
 
 %global toolchain clang
 
@@ -277,10 +278,13 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime-devel/%{ROCM_PATCH_1}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime-devel/%{ROCM_PATCH_2}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime-devel/%{ROCM_PATCH_3}
 
 patch "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipconfig.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
 patch "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipcc.pl" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
+
+patch "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/hipvars.pm" "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_3}"
 
 cd %{buildroot}
 
