@@ -80,7 +80,7 @@ Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - HIP parallel primitives
 
 %description
-Radeon Open Compute - FFT implementation
+Radeon Open Compute - HIP parallel primitives
 
 %build
 
