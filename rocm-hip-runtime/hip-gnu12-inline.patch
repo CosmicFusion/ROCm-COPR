@@ -1,0 +1,48 @@
+From 28009bc68faf2b4dd8fda91c99b0725e1b063a18 Mon Sep 17 00:00:00 2001
+From: Satyanvesh Dittakavi <Satyanvesh.Dittakavi@amd.com>
+Date: Fri, 13 May 2022 10:38:16 +0000
+Subject: [PATCH] SWDEV-334908 - Guard the __noinline__ macro as it is also
+ supported as keyword by clang
+
+Change-Id: I314b3ac463ea63132a5107f4f24ce769d8112b9b
+---
+ include/hip/amd_detail/host_defines.h | 5 ++++-
+ src/hiprtc/cmake/HIPRTC.cmake         | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/include/hip/amd_detail/host_defines.h b/include/hip/amd_detail/host_defines.h
+index 6c343831..5a89433c 100644
+--- a/include/hip/amd_detail/host_defines.h
++++ b/include/hip/amd_detail/host_defines.h
+@@ -1,5 +1,5 @@
+ /*
+-Copyright (c) 2015 - 2021 Advanced Micro Devices, Inc. All rights reserved.
++Copyright (c) 2015 - 2022 Advanced Micro Devices, Inc. All rights reserved.
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+@@ -47,7 +47,10 @@ THE SOFTWARE.
+ #define __constant__ __attribute__((constant))
+ #endif // !__CLANG_HIP_RUNTIME_WRAPPER_INCLUDED__
+ 
++#if !defined(__has_feature) || !__has_feature(cuda_noinline_keyword)
+ #define __noinline__ __attribute__((noinline))
++#endif
++
+ #define __forceinline__ inline __attribute__((always_inline))
+ 
+ #if __HIP_NO_IMAGE_SUPPORT
+diff --git a/src/hiprtc/cmake/HIPRTC.cmake b/src/hiprtc/cmake/HIPRTC.cmake
+index 209a484e..ddafe600 100644
+--- a/src/hiprtc/cmake/HIPRTC.cmake
++++ b/src/hiprtc/cmake/HIPRTC.cmake
+@@ -35,7 +35,9 @@ function(get_hiprtc_macros HIPRTC_DEFINES)
+ #define __constant__ __attribute__((constant))\n\
+ #define __shared__ __attribute__((shared))\n\
+ #define __align__(x) __attribute__((aligned(x)))\n\
++#if !defined(__has_feature) || !__has_feature(cuda_noinline_keyword)\n\
+ #define __noinline__ __attribute__((noinline))\n\
++#endif\n\
+ #define __forceinline__ inline __attribute__((always_inline))\n\
+ 
+ #define launch_bounds_impl0(requiredMaxThreadsPerBlock)                                       \\\n\
