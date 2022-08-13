@@ -124,7 +124,10 @@ cd %{ROCM_BUILD_DIR}/rocblas
  -DCMAKE_TOOLCHAIN_FILE=%{ROCM_GIT_DIR}/rocBLAS/toolchain-linux.cmake \
  -DBUILD_TESTING=OFF
     
-    ninja -j$(nproc)
+    PATH="/opt/rocm/llvm/bin:${PATH}" \
+  CXX=/opt/rocm/bin/hipcc \
+  HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+  ninja -j$(nproc)
 
 
 
