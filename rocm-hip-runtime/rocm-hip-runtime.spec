@@ -14,6 +14,7 @@
 %global ROCM_OCL_GIT https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime.git
 %global ROCM_HIP_GIT https://github.com/ROCm-Developer-Tools/HIP
 %global ROCM_HAMD_GIT https://github.com/ROCm-Developer-Tools/hipamd.git
+%global ROCM_PATCH_1 hip-gnu12-inline.patch
 
 %global toolchain clang
 
@@ -195,8 +196,14 @@ mkdir -p %{ROCM_BUILD_DIR}/rocm-hip-runtime
 cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
 pushd .
 
+# Level 2 : Patch
 
-# Level 2 : Build
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_1}
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
 
