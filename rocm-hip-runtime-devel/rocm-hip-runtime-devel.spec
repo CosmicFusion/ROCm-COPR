@@ -16,6 +16,7 @@
 %global ROCM_PATCH_1 hipconfig-flags.patch
 %global ROCM_PATCH_2 hipcc-flags.patch
 %global ROCM_PATCH_3 hipvars-flags.patch
+%global ROCM_PATCH_4 hip-gnu12-inline.patch
 
 %global toolchain clang
 
@@ -249,8 +250,15 @@ mkdir -p %{ROCM_BUILD_DIR}/rocm-hip-runtime
 cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
 pushd .
 
+# Level 2 : Patch
 
-# Level 2 : Build
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_4}
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_4}"
+
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
 
