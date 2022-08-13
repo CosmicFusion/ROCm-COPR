@@ -90,6 +90,8 @@ pushd .
 cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-llvm/%{ROCM_PATCH_1}
 
+cd %{ROCM_GIT_DIR}/llvm-project
+
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
 # Level 3 : Build
