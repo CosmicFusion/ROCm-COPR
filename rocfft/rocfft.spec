@@ -107,14 +107,26 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocfft
 
-     CC=/opt/rocm/bin/hipcc CXX=/opt/rocm/bin/hipcc \
-     CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-     CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+     
+     CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+     CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+     HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+     HIP_ENV_CC_FLAGS='-DD_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
      cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
+     -DCMAKE_CXX_COMPILER=/opt/rocm/bin/hipcc \
+     -DCMAKE_C_COMPILER=/opt/rocm/bin/hipcc \
      -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-     -DAMDGPU_TARGETS="$AMDGPU_TARGETS"
+     -DAMDGPU_TARGETS="$AMDGPU_TARGETS" \
+     -DCMAKE_BUILD_WITH_INSTALL_RPATH=1
 
-    ninja -j$(nproc)
+     
+
+
+     CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+     CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+     HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+     HIP_ENV_CC_FLAGS='-DD_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+     ninja -j$(nproc)
 
 
 
