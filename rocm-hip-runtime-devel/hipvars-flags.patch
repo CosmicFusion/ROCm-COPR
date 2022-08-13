@@ -5,8 +5,8 @@
  $HIP_COMPILER = $ENV{'HIP_COMPILER'} // $hipInfo{'HIP_COMPILER'} // "clang";
  $HIP_RUNTIME = $ENV{'HIP_RUNTIME'} // $hipInfo{'HIP_RUNTIME'} // "rocclr";
 +# You may need to add additional flags to hipcc , so this ENV VAR was patched in
-+$HIP_ENV_CXX_FLAGS = $ENV{'HIP_ENV_CXX_FLAGS'} // " -D_GNU_SOURCE -isystem /usr/include ";
-+$HIP_ENV_CC_FLAGS = $ENV{'HIP_ENV_CC_FLAGS'} // " -D_GNU_SOURCE -isystem /usr/include ";
++$HIP_ENV_CXX_FLAGS = $ENV{'HIP_ENV_CXX_FLAGS'} // " -D_GNU_SOURCE ";
++$HIP_ENV_CC_FLAGS = $ENV{'HIP_ENV_CC_FLAGS'} // " -D_GNU_SOURCE ";
  
  # If using ROCclr runtime, need to find HIP_ROCCLR_HOME
  if (defined $HIP_RUNTIME and $HIP_RUNTIME eq "rocclr" and !defined $HIP_ROCCLR_HOME) {
