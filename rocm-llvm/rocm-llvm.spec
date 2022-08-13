@@ -11,6 +11,7 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_LLVM_GIT https://github.com/RadeonOpenCompute/llvm-project
+%global ROCM_PATCH_1 llvm-gnu12-inline.patch
 
 %global toolchain clang
 
@@ -84,8 +85,14 @@ mkdir -p %{ROCM_BUILD_DIR}/rocm-llvm
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 pushd .
 
+# Level 2 : Patch
 
-# Level 2 : Build
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_1}
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 
@@ -100,8 +107,7 @@ cd %{ROCM_BUILD_DIR}/rocm-llvm
     -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DLLVM_BUILD_TESTS=OFF \
     -DLLVM_ENABLE_PROJECTS='llvm;clang;compiler-rt;lld' \
-    -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86' \
-    -DLLVM_BINUTILS_INCDIR=/usr/include
+    -DLLVM_TARGETS_TO_BUILD='AMDGPU;X86'
     ninja -j$(nproc)
 
 
