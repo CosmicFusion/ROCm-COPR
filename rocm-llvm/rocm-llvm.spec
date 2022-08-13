@@ -88,7 +88,7 @@ pushd .
 # Level 2 : Patch
 
 cd %{ROCM_PATCH_DIR}
-wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_1}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-llvm/%{ROCM_PATCH_1}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
