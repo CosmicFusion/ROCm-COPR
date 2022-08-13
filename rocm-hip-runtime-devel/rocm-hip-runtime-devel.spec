@@ -255,6 +255,8 @@ pushd .
 cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_4}
 
+cd %{ROCM_GIT_DIR}/hipamd
+
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_4}"
 
 
