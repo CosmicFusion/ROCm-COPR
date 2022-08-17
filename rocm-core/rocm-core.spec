@@ -125,6 +125,7 @@ touch %{buildroot}/etc/adduser.conf
 echo 'ADD_EXTRA_GROUPS=1' | tee -a %{buildroot}/etc/adduser.conf
 echo 'EXTRA_GROUPS=video' | tee -a %{buildroot}/etc/adduser.conf
 echo 'EXTRA_GROUPS=render' | tee -a %{buildroot}/etc/adduser.conf
+mkdir -p %{buildroot}/etc/udev/rules.d/
 touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
 echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
 chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
