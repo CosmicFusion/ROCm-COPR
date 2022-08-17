@@ -41,6 +41,8 @@ Requires:      zlib
 Requires:      rocm-device-libs
 Requires:      rocm-core
 
+Obsoletes:  	rocm-comgr
+
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
