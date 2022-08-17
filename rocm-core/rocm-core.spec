@@ -121,7 +121,6 @@ mkdir -p %{buildroot}/etc/profile.d
 touch %{buildroot}/etc/profile.d/rocm-core.sh
 echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh
 echo  'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/rocprofiler/bin:/opt/rocm/opencl/bin' >>  %{buildroot}/etc/profile.d/rocm-core.sh
-touch %{buildroot}/etc/adduser.conf
 mkdir -p %{buildroot}/etc/udev/rules.d/
 touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
 echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
