@@ -122,11 +122,11 @@ touch %{buildroot}/etc/profile.d/rocm-core.sh
 echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh
 echo  'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/rocprofiler/bin:/opt/rocm/opencl/bin' >>  %{buildroot}/etc/profile.d/rocm-core.sh
 touch %{buildroot}/etc/adduser.conf
-echo 'ADD_EXTRA_GROUPS=1' | sudo tee -a %{buildroot}/etc/adduser.conf
-echo 'EXTRA_GROUPS=video' | sudo tee -a %{buildroot}/etc/adduser.conf
-echo 'EXTRA_GROUPS=render' | sudo tee -a %{buildroot}/etc/adduser.conf
+echo 'ADD_EXTRA_GROUPS=1' | tee -a %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=video' | tee -a %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=render' | tee -a %{buildroot}/etc/adduser.conf
 touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
-echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | sudo tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
+echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
 chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 
 %files
