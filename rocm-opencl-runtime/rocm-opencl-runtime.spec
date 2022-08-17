@@ -1,5 +1,6 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
+%define _unpackaged_files_terminate_build 0
 
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
@@ -203,7 +204,6 @@ echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_M
 /etc/ld.so.conf.d/10-rocm-opencl.conf
 /etc/OpenCL/vendors/amdocl64.icd
 %exclude /src
-%exclude %dir /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 
 %post
 /sbin/ldconfig
