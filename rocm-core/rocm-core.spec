@@ -69,7 +69,7 @@ mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROC
 
 touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 
-echo '#ifndef ROCMCORE_WRAPPER_INCLUDE_ROCM_VERSION_H' > %{buildroot}/opt/rocm/include/rocm_version.h
+echo '#ifndef ROCMCORE_WRAPPER_INCLUDE_ROCM_VERSION_H' > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 echo '#define ROCMCORE_WRAPPER_INCLUDE_ROCM_VERSION_H' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 echo '#pragma message("This file is deprecated. Use file from include path /opt/rocm-ver/include/ and prefix with rocm-core")' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
