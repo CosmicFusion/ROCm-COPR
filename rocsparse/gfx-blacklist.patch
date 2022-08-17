@@ -1,0 +1,75 @@
+From f8934f91f779c291a5cf1157ed58fc427544fd2d Mon Sep 17 00:00:00 2001
+From: Cordell Bloor <Cordell.Bloor@amd.com>
+Date: Mon, 4 Jul 2022 13:55:24 -0600
+Subject: [PATCH] Guard use of __hip_move_dpp on Navi 1x and Navi 2x
+
+The use of __hip_move_dpp remains the default. The target architecture
+is checked against a blacklist of architectures where
+__builtin_amdgcn_mov_dpp is known to be broken. This could probably be
+improved by using try_compile to test for support at configuration time
+and/or by adding a feature check macro for this builtin to clang.
+
+rocSPARSE can also be compiled with CXXFLAGS=-DROCSPARSE_USE_MOVE_DPP=0
+to force the use of the non-DPP implementation.
+
+Reference: https://github.com/ROCmSoftwarePlatform/rocSPARSE/issues/250
+---
+ library/src/include/common.h | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/library/src/include/common.h b/library/src/include/common.h
+index 1d4e0ab4..a0bcc798 100644
+--- a/library/src/include/common.h
++++ b/library/src/include/common.h
+@@ -34,6 +34,24 @@
+ 
+ // clang-format off
+ 
++#ifndef ROCSPARSE_USE_MOVE_DPP
++#if defined(__gfx1010__) || \
++    defined(__gfx1011__) || \
++    defined(__gfx1012__) || \
++    defined(__gfx1013__) || \
++    defined(__gfx1030__) || \
++    defined(__gfx1031__) || \
++    defined(__gfx1032__) || \
++    defined(__gfx1033__) || \
++    defined(__gfx1034__) || \
++    defined(__gfx1035__) || \
++    defined(__gfx1036__)
++#define ROCSPARSE_USE_MOVE_DPP 0
++#else
++#define ROCSPARSE_USE_MOVE_DPP 1
++#endif
++#endif
++
+ // BSR indexing macros
+ #define BSR_IND(j, bi, bj, dir) ((dir == rocsparse_direction_row) ? BSR_IND_R(j, bi, bj) : BSR_IND_C(j, bi, bj))
+ #define BSR_IND_R(j, bi, bj) (block_dim * block_dim * (j) + (bi) * block_dim + (bj))
+@@ -233,7 +251,7 @@ __device__ __forceinline__ void rocsparse_blockreduce_min(int i, T* data)
+     if(BLOCKSIZE >   1) { if(i <   1 && i +   1 < BLOCKSIZE) { data[i] = min(data[i], data[i +   1]); } __syncthreads(); }
+ }
+ 
+-#if (!defined(__gfx1030__)) && (!defined(__gfx1011__))
++#if ROCSPARSE_USE_MOVE_DPP
+ // DPP-based wavefront reduction maximum
+ template <unsigned int WFSIZE>
+ __device__ __forceinline__ void rocsparse_wfreduce_max(int* maximum)
+@@ -499,7 +517,7 @@ __device__ __forceinline__ double rocsparse_wfreduce_sum(double sum)
+     sum = temp_sum.val;
+     return sum;
+ }
+-#else
++#else /* ROCSPARSE_USE_MOVE_DPP */
+ template <unsigned int WFSIZE>
+ __device__ __forceinline__ void rocsparse_wfreduce_max(int* maximum)
+ {
+@@ -566,7 +584,7 @@ __device__ __forceinline__ double rocsparse_wfreduce_sum(double sum)
+ 
+     return sum;
+ }
+-#endif
++#endif /* ROCSPARSE_USE_MOVE_DPP */
+ 
+ // DPP-based complex float wavefront reduction sum
+ template <unsigned int WFSIZE>
