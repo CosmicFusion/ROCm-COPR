@@ -13,6 +13,7 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_ROCRAND_GIT https://github.com/ROCmSoftwarePlatform/rocRAND
+%global ROCM_HIPRAND_GIT https://github.com/ROCmSoftwarePlatform/hipRAND
 
 %global toolchain clang
 
@@ -75,6 +76,8 @@ BuildRequires: libgomp
 
 Provides:      rocrand
 Provides:      rocrand(x86-64)
+Provides:      hiprand
+Provides:      hiprand(x86-64)
 Requires:      rocm-hip-runtime
 
 Recommends: gcc-gfortran
@@ -113,12 +116,13 @@ mkdir -p %{ROCM_BUILD_DIR}/rocrand
 cd %{ROCM_BUILD_DIR}/rocrand
 pushd .
 
+cd "%{ROCM_GIT_DIR}/rocRAND"
+
+git clone "%{ROCM_HIPRAND_GIT}"
 
 # Level 2 : Build
 
 cd %{ROCM_BUILD_DIR}/rocrand
-
-     
     
   HIP_ENV_CXX_FLAGS=' -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   CXX=/opt/rocm/bin/hipcc \
