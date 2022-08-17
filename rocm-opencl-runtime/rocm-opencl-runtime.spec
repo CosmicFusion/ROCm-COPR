@@ -1,6 +1,10 @@
+%undefine _auto_set_build_flags
+%define _build_id_links none
+
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 1
+%global ROCM_MAGIC_VERSION 79
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_LIBPATCH_VERSION 50201
 %global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
@@ -9,10 +13,48 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCCLR_GIT https://github.com/ROCm-Developer-Tools/ROCclr.git
 %global ROCM_OCL_GIT https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime.git
-%global ROCM_PATCH_1 rocclr-gfx803.patch
+#%global ROCM_PATCH_1 rocclr-gfx803.patch
+
+%global toolchain clang
 
 
-
+BuildRequires: wget
+BuildRequires: libstdc++-devel
+BuildRequires: rocm-llvm
+BuildRequires: rocm-cmake
+BuildRequires: ninja-build
+BuildRequires: clang
+BuildRequires: cmake
+BuildRequires: numactl-devel
+BuildRequires: numactl
+BuildRequires: ncurses-devel
+BuildRequires: pciutils-devel
+BuildRequires: python3
+BuildRequires: git
+BuildRequires: python3-devel
+BuildRequires: hsa-rocr
+BuildRequires: elfutils-libelf
+BuildRequires: elfutils-libelf-devel
+BuildRequires: hsakmt-roct
+BuildRequires: rocm-device-libs
+BuildRequires: libdrm-devel
+BuildRequires: libdrm
+BuildRequires: libglvnd-devel
+BuildRequires: doxygen
+BuildRequires: perl
+BuildRequires: gcc-plugin-devel
+BuildRequires:	gcc
+BuildRequires:	gcc-c++
+BuildRequires:	clang
+BuildRequires: libstdc++-devel
+BuildRequires: clang
+BuildRequires: ninja-build
+BuildRequires: cmake
+BuildRequires: python3
+BuildRequires: git
+BuildRequires: python3-devel
+BuildRequires: rocm-llvm
+BuildRequires: rocm-cmake
 BuildRequires: clang
 BuildRequires: ninja-build
 BuildRequires: cmake
@@ -23,14 +65,65 @@ BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
 BuildRequires: wget
+BuildRequires: gcc-plugin-devel
+BuildRequires:	gcc
+BuildRequires:	gcc-c++
+BuildRequires:	clang
+BuildRequires:	cmake
+BuildRequires:	ninja-build
+BuildRequires:	zlib-devel
+BuildRequires:	libffi-devel
+BuildRequires:	ncurses-devel
+BuildRequires:	python3-psutil
+BuildRequires:	valgrind-devel
+BuildRequires:	libedit-devel
+BuildRequires:	python3-devel
+BuildRequires:	python3-setuptools
+BuildRequires:	gnupg2
+BuildRequires:      comgr
+BuildRequires: clang
+BuildRequires: ninja-build
+BuildRequires: cmake
+BuildRequires: libglvnd-devel
+BuildRequires: numactl-devel
+BuildRequires: numactl
+BuildRequires: python3
+BuildRequires: git
+BuildRequires: python3-devel
+BuildRequires: wget
+BuildRequires: gcc-plugin-devel
+BuildRequires:	gcc
+BuildRequires:	gcc-c++
+BuildRequires:	clang
+BuildRequires:	cmake
+BuildRequires:	ninja-build
+BuildRequires:	zlib-devel
+BuildRequires:	libffi-devel
+BuildRequires:	ncurses-devel
+BuildRequires:	python3-psutil
+BuildRequires:	python3-sphinx
+BuildRequires:	python3-recommonmark
+BuildRequires:	multilib-rpm-config
+BuildRequires:	binutils-devel
+BuildRequires:	valgrind-devel
+BuildRequires:	libedit-devel
+BuildRequires:	python3-devel
+BuildRequires:	python3-setuptools
+BuildRequires:	llvm-devel
 
-Provides:      rocm-opencl
-Provides:      rocm-opencl(x86-64)
-Provides:      rocm-ocl-icd
-Provides:      rocm-ocl-icd(x86-64)
 Requires:      comgr
-Requires:      hsa-rocr
 Requires:      rocm-core
+Requires:      rocminfo
+Requires:      hsa-rocr
+
+Provides:      rocm-ocl-icd
+Provides:      rocm-opencl
+Provides:      rocm-ocl-icd(x86-64)
+Provides:      rocm-opencl(x86-64)
+Provides:      rocm-opencl-runtime
+Provides:      rocm-opencl-runtime(x86-64)
+
+Obsoletes:  	rocm-opencl
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -39,7 +132,7 @@ BuildArch:     x86_64
 Name:          rocm-opencl-runtime
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr.%{fedora}
-License:       MIT and ASL 2.0
+License:       MIT
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - OpenCL runtime
 
@@ -56,7 +149,7 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# Level 1 : GIT Clone
 
 cd  %{ROCM_GIT_DIR}
 
@@ -68,64 +161,49 @@ mkdir -p %{ROCM_BUILD_DIR}/rocm-opencl-runtime
 cd %{ROCM_BUILD_DIR}/rocm-opencl-runtime
 pushd .
 
-# Level 2 : GFX8 PATCH
-
-cd %{ROCM_PATCH_DIR}
-#wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-opencl-runtime/%{ROCM_PATCH_1}
-
-cd %{ROCM_GIT_DIR}/ROCclr
-git reset --hard
-#git apply %{ROCM_PATCH_DIR}/rocclr-gfx803.patch
-
-
-# Level 3 : Build
+# Level 2 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-opencl-runtime
 
-cmake \
-    -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/opencl" \
-    -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/opencl" \
-    -Dhsa-runtime64_DIR=%{ROCM_INSTALL_DIR}/lib/cmake/hsa-runtime64 \
-    %{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime
-    make -j$(nproc)
+CC=clang CXX=clang++ \
+cmake -Wno-dev -GNinja -S %{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime \
+-DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
+-DCMAKE_BUILD_TYPE=Release
+    
+DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 # Level 4 : Package
 
-DESTDIR=%{buildroot} make install
+DESTDIR=%{buildroot} ninja install
 
 mkdir -p %{buildroot}/etc/OpenCL/vendors
 touch %{buildroot}/etc/OpenCL/vendors/amdocl64.icd
 echo libamdocl64.so > %{buildroot}/etc/OpenCL/vendors/amdocl64.icd
-rm -r %{buildroot}/%{ROCM_INSTALL_DIR}/opencl/opencl
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 echo /opt/rocm/opencl/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-oclrt
+
 
 %files
-%{ROCM_INSTALL_DIR}/opencl/bin/clinfo
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl2.hpp
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_dx9_media_sharing_intel.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_ext.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_ext_intel.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_gl_ext.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_gl.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl.hpp
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_icd.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_platform.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_va_api_media_sharing_intel.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/cl_version.h
-%{ROCM_INSTALL_DIR}/opencl/include/CL/opencl.h
-%{ROCM_INSTALL_DIR}/opencl/lib/libamdocl64.so
-%{ROCM_INSTALL_DIR}/opencl/lib/libcltrace.so
-%{ROCM_INSTALL_DIR}/opencl/lib/libOpenCL.so
-%{ROCM_INSTALL_DIR}/opencl/lib/libOpenCL.so.1
-%{ROCM_INSTALL_DIR}/opencl/lib/libOpenCL.so.1.2
-%{ROCM_INSTALL_DIR}/opencl/share/doc/opencl/LICENSE*
-%{ROCM_INSTALL_DIR}/opencl/share/doc/rocm-ocl-icd/LICENSE*
+# rocm-opencl
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/opencl/LICENSE*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/opencl/lib/lib*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/opencl/bin/clinfo
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/lib*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/clinfo
+# rocm-ocl-icd
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocm-ocl-icd/LICENSE*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/opencl/lib/libOpen*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libOpen*
+# rocm-opencl-runtime
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-oclrt
 /etc/ld.so.conf.d/10-rocm-opencl.conf
 /etc/OpenCL/vendors/amdocl64.icd
 %exclude /src
+%exclude %dir /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 
 %post
 /sbin/ldconfig
