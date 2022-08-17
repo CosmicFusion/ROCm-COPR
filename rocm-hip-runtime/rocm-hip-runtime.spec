@@ -142,34 +142,17 @@ Radeon Open Compute (ROCm) runtime for running HIP applications on the AMD platf
 
 %build
 
-# Make basic structure
+# Level 1 : Create versioning from official packaging
 
-mkdir -p %{buildroot}/src
+## file N1 from official repos (rocm-core) :
 
-cd %{buildroot}/src
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
 
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
 
-# Level 1 : Get deb
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
 
-wget -r -nd --no-parent -A 'rocm-hip-runtime*.deb' http://repo.radeon.com/rocm/apt/%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/pool/main/r/rocm-hip-runtime/
-
-mv ./rocm-hip-runtime* ./rocm-hip-runtime.deb
-
-# Level 2 : Extract deb
-
-ar -x "rocm-hip-runtime.deb"
-
-mv ./data* ./data-archive.tar.gz
-
-tar -xf data-archive.tar.gz
-
-# Level 3 : Package
-
-mv ./opt %{buildroot}
-
-# Clean
-
-rm -r %{buildroot}/src/
+#
 
 # Stage 2
 
