@@ -107,7 +107,7 @@ mkdir -p %{ROCM_PATCH_DIR}
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_REL_TAG}" "%{ROCM_ROCPRIM_GIT}"
+git clone -b "%{ROCM_GIT_REL_TAG}" "%{ROCM_ROCRAND_GIT}"
 
 mkdir -p %{ROCM_BUILD_DIR}/rocrand
 cd %{ROCM_BUILD_DIR}/rocrand
