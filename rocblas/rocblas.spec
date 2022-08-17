@@ -13,7 +13,7 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_ROCBLAS_GIT https://github.com/ROCmSoftwarePlatform/rocBLAS
-
+%global ROCM_PATCH_1 rocblas-include-path.patch
 %global toolchain clang
 
 BuildRequires: clang
@@ -66,6 +66,11 @@ BuildRequires: rocminfo
 BuildRequires: comgr
 BuildRequires: python3-pyyaml
 BuildRequires: python3-virtualenv
+BuildRequires: libcxx-devel
+BuildRequires: openssl-devel
+BuildRequires: msgpack-devel
+BuildRequires: gcc-gfortran
+BuildRequires: libgomp
 
 Provides:      rocblas
 Provides:      rocblas(x86-64)
@@ -96,7 +101,7 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# Level 1 : GIT Clone
 
 cd  %{ROCM_GIT_DIR}
 
@@ -106,8 +111,17 @@ mkdir -p %{ROCM_BUILD_DIR}/rocblas
 cd %{ROCM_BUILD_DIR}/rocblas
 pushd .
 
+# Level 2 : Patch
 
-# Level 2 : Build
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocblas/%{ROCM_PATCH_1}
+
+cd %{ROCM_GIT_DIR}/rocBLAS
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocblas
 
