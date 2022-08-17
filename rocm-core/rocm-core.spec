@@ -44,13 +44,6 @@ Radeon Open Compute (ROCm) Runtime software stack
 
 %build
 
-# Make basic structure
-
-mkdir -p %{buildroot}/src
-
-cd %{buildroot}/src
-
-
 # Level 1 : Create versioning from official packaging
 
 ## file N1 from official repos (rocm-core) :
@@ -120,8 +113,6 @@ echo '#endif' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSIO
 
 # Level 2 : Add config & package
 
-mv ./opt %{buildroot}
-
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 echo /opt/rocm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
@@ -146,7 +137,6 @@ chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
-%exclude /src
 
 
 %post
