@@ -144,7 +144,7 @@ Radeon Open Compute (ROCm) runtime for running HIP applications on the AMD platf
 
 # Level 1 : Create versioning from official packaging
 
-## file N1 from official repos (rocm-core) :
+## file N1 from official repos (rocm-hip-runtime) :
 
 mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
 
