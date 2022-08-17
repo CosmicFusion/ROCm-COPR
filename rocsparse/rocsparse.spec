@@ -72,7 +72,7 @@ BuildRequires: openssl-devel
 BuildRequires: msgpack-devel
 BuildRequires: gcc-gfortran
 BuildRequires: libgomp
-
+BuildRequires: rocprim
 
 Provides:      rocsparse
 Provides:      rocsparse(x86-64)
