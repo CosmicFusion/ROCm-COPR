@@ -122,9 +122,6 @@ touch %{buildroot}/etc/profile.d/rocm-core.sh
 echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh
 echo  'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/rocprofiler/bin:/opt/rocm/opencl/bin' >>  %{buildroot}/etc/profile.d/rocm-core.sh
 touch %{buildroot}/etc/adduser.conf
-echo 'ADD_EXTRA_GROUPS=1' | tee -a %{buildroot}/etc/adduser.conf
-echo 'EXTRA_GROUPS=video' | tee -a %{buildroot}/etc/adduser.conf
-echo 'EXTRA_GROUPS=render' | tee -a %{buildroot}/etc/adduser.conf
 mkdir -p %{buildroot}/etc/udev/rules.d/
 touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
 echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
@@ -143,7 +140,13 @@ chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 %post
 /sbin/ldconfig
 ln -s /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} /opt/rocm
+echo 'ADD_EXTRA_GROUPS=1' | tee -a /etc/adduser.conf
+echo 'EXTRA_GROUPS=video' | tee -a /etc/adduser.conf
+echo 'EXTRA_GROUPS=render' | tee -a /etc/adduser.conf
 
 %postun
 /sbin/ldconfig
 rm -r /opt/rocm
+sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
+sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
+sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
