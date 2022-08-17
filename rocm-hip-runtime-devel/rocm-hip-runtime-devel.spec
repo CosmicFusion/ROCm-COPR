@@ -277,6 +277,7 @@ chmod +x %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
 %files
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+/etc/profile.d/rocm-hip-devel.sh
 %exclude /src
 
 
