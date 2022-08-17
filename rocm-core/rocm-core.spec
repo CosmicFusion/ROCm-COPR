@@ -51,21 +51,74 @@ mkdir -p %{buildroot}/src
 cd %{buildroot}/src
 
 
-# Level 1 : Get deb
+# Level 1 : Create versioning from official packaging
 
-wget -r -nd --no-parent -A 'rocm-core*.deb' http://repo.radeon.com/rocm/apt/%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/pool/main/r/rocm-core/
+## file N1 from official repos (rocm-core) :
 
-mv ./rocm-core* ./rocm-core.deb
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
 
-# Level 2 : Extract deb
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
 
-ar -x "rocm-core.deb"
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
 
-mv ./data* ./data-archive.tar.gz
+#
 
-tar -xf data-archive.tar.gz
+## file N2 from official repos (rocm-core) :
 
-# Level 3 : Package
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include
+
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+
+echo '#ifndef ROCMCORE_WRAPPER_INCLUDE_ROCM_VERSION_H' > %{buildroot}/opt/rocm/include/rocm_version.h
+echo '#define ROCMCORE_WRAPPER_INCLUDE_ROCM_VERSION_H' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+echo '#pragma message("This file is deprecated. Use file from include path /opt/rocm-ver/include/ and prefix with rocm-core")' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm_version.h
+echo '#include "rocm-core/rocm_version.h"' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+echo '#endif' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
+
+#
+
+## file N3 from official repos (rocm-core) :
+
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core
+
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+
+echo '#ifndef _ROCM_VERSION_H_' > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/rocm_version.h
+echo '#define _ROCM_VERSION_H_' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '#ifdef __cplusplus' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo 'extern "C" {' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '#endif' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo "#define ROCM_VERSION_MAJOR   %{ROCM_MAJOR_VERSION}" >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo "#define ROCM_VERSION_MINOR   %{ROCM_MINOR_VERSION}" >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo "#define ROCM_VERSION_PATCH   %{ROCM_PATCH_VERSION}" >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo 'typedef enum {' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '	VerSuccess=0,' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '	VerIncorrecPararmeters,' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '	VerValuesNotDefined,' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '	VerErrorMAX' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '} VerErrors;' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo 'VerErrors getROCmVersion(unsigned int* Major, unsigned int* Minor, unsigned int* Patch) __attribute__((nonnull)) ;' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '#ifdef __cplusplus' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '#endif' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+echo '#endif' >> %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION/include/rocm-core/rocm_version.h
+
+# Level 2 : Add config & package
 
 mv ./opt %{buildroot}
 
@@ -76,10 +129,19 @@ echo /opt/rocm/lib64 >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 mkdir -p %{buildroot}/etc/profile.d
 touch %{buildroot}/etc/profile.d/rocm-core.sh
 echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh
+echo  'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/rocprofiler/bin:/opt/rocm/opencl/bin' >>  %{buildroot}/etc/profile.d/rocm-core.sh
+touch %{buildroot}/etc/adduser.conf
+echo 'ADD_EXTRA_GROUPS=1' | sudo tee -a %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=video' | sudo tee -a %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=render' | sudo tee -a %{buildroot}/etc/adduser.conf
+touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
+echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | sudo tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
 chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 
 %files
+/etc/adduser.conf
 /etc/ld.so.conf.d/10-rocm-core.conf
+/etc/udev/rules.d/70-kfd.rules
 /etc/profile.d/rocm-core.sh
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
