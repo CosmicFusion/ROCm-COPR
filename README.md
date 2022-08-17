@@ -55,7 +55,7 @@ an issue at the [issue tracker](https://github.com/CosmicFusion/ROCm-COPR/issues
 to report the problem with build/error logs.
 
 and add it to your commit.
-As we want to bring ROCm into `community` we would greatly appreciate if you test that the package builds in a clean chroot such as mock.
+As we want to bring ROCm into COPR we would greatly appreciate if you test that the package builds in a clean chroot such as mock.
 
 ## Thanks [rocm-arch](https://github.com/rocm-arch/rocm-arch)
 for putting your README.md file out there so i can steal it .
