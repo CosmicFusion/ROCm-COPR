@@ -49,23 +49,17 @@ mkdir -p %{buildroot}/src
 cd %{buildroot}/src
 
 
-# Level 1 : Get deb
+# Level 1 : Create versioning from official packaging
 
-wget -r -nd --no-parent -A 'rocm-language-runtime*.deb' http://repo.radeon.com/rocm/apt/%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/pool/main/r/rocm-language-runtime/
+## file N1 from official repos (rocm-language-runtime) :
 
-mv ./rocm-language-runtime* ./rocm-language-runtime.deb
+mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
 
-# Level 2 : Extract deb
+touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-lrt
 
-ar -x "rocm-language-runtime.deb"
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-lrt
 
-mv ./data* ./data-archive.tar.gz
-
-tar -xf data-archive.tar.gz
-
-# Level 3 : Package
-
-mv ./opt %{buildroot}
+#
 
 %files
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-lrt
