@@ -74,20 +74,15 @@ touch %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 echo /opt/rocm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 echo /opt/rocm/lib64 >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 mkdir -p %{buildroot}/etc/profile.d
-touch %{buildroot}/etc/profile.d/ROC_CFG.sh
-echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/ROC_CFG.sh
-chmod +x %{buildroot}/etc/profile.d/ROC_CFG.sh
+touch %{buildroot}/etc/profile.d/rocm-core.sh
+echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh
+chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 
 %files
 /etc/ld.so.conf.d/10-rocm-core.conf
-/etc/profile.d/ROC_CFG.sh
+/etc/profile.d/rocm-core.sh
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/CMakeFiles/rocm-core.dir
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so.1
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocm-core.so.1.0.50201
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/rocmmod
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
 %exclude /src
 
