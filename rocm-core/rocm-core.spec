@@ -128,7 +128,6 @@ echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{bu
 chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 
 %files
-/etc/adduser.conf
 /etc/ld.so.conf.d/10-rocm-core.conf
 /etc/udev/rules.d/70-kfd.rules
 /etc/profile.d/rocm-core.sh
@@ -147,6 +146,6 @@ echo 'EXTRA_GROUPS=render' | tee -a /etc/adduser.conf
 %postun
 /sbin/ldconfig
 rm -r /opt/rocm
-sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
-sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
-sed -i "s#/opt/amdgpu-pro/lib64/amdvlk64.so#/opt/amdgpu-pro/vulkan/lib64/amdvlk64.so#" "./opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json"
+sed -i "s#EXTRA_GROUPS=video# #" "/etc/adduser.conf"
+sed -i "s#EXTRA_GROUPS=render# #" "/etc/adduser.conf"
+
