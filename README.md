@@ -1,5 +1,5 @@
 # ROCm for Fedora Linux
-This repository hosts a collection of [Fedora](https://www.getfedora.org/)
+This repository hosts a collection of [Fedora](https://getfedora.org/)
 RPM SPEC Sheets for the
 [AMD ROCm Platform](https://www.amd.com/en/graphics/servers-solutions-rocm).
 These SPEC Sheets implement a great portion of the stack, ranging from low-level
@@ -19,7 +19,7 @@ Therefore, building all packages from source can take a long time .
 To speed up compilation of application libraries like `rocblas` or `rocfft` export `AMDGPU_TARGETS`
 and set it to the architecture name of your GPU. To find out this name, install `rocminfo`,
 ```bash
-paru -S rocminfo
+sudo dnf install rocminfo
 ```
 and call
 ```bash
