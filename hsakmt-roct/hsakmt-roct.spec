@@ -33,10 +33,16 @@ Provides:      roct-thunk-interface
 Provides:      roct-thunk-interface(x86-64)
 Provides:      hsakmt-devel
 Provides:      hsakmt-devel(x86-64)
+Provides:      hsakmt
+Provides:      hsakmt(x86-64)
+Provides:      hsakmt-roct-devel
 Requires:      libdrm
 Requires:      numactl
 Requires:      pciutils
 Requires:      rocm-core
+
+Obsoletes: hsakmt
+Obsoletes: hsakmt-devel
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
