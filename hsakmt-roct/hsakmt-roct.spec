@@ -36,6 +36,7 @@ Provides:      hsakmt-devel(x86-64)
 Provides:      hsakmt
 Provides:      hsakmt(x86-64)
 Provides:      hsakmt-roct-devel
+Provides:      hsakmt-roct-devel(x86-64)
 Requires:      libdrm
 Requires:      numactl
 Requires:      pciutils
