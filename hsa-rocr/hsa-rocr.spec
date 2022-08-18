@@ -36,15 +36,28 @@ BuildRequires: libdrm
 
 Provides:      hsa-rocr
 Provides:      hsa-rocr(x86-64)
-Provides:      rocm-runtime
-Provides:      rocm-runtime(x86-64)
 Provides:      rocr-runtime
 Provides:      rocr-runtime(x86-64)
+Provides:      rocr-runtime-devel
+Provides:      rocr-runtime-devel(x86-64)
+Provides:      rocm-runtime
+Provides:      rocm-runtime(x86-64)
+Provides:      rocm-runtime-devel
+Provides:      rocm-runtime-devel(x86-64)
+Provides:      hsa-rocr
+Provides:      hsa-rocr(x86-64)
+Provides:      hsa-rocr-devel
+Provides:      hsa-rocr-devel(x86-64)
 Requires:      elfutils-libelf
 Requires:      hsakmt-roct
 Requires:      rocm-device-libs
 Requires:      rocm-core
 Requires:      libdrm
+
+Obsoletes:  	rocr-runtime
+Obsoletes:  	rocm-runtime
+Obsoletes:  	rocr-runtime-devel
+Obsoletes:  	rocm-runtime-devel
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
