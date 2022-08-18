@@ -125,11 +125,17 @@ mkdir -p %{buildroot}/etc/udev/rules.d/
 touch %{buildroot}/etc/udev/rules.d/70-kfd.rules
 echo 'SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="video"' | tee %{buildroot}/etc/udev/rules.d/70-kfd.rules
 chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
+ln -s /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} %{buildroot}/opt/rocm
+echo 'ADD_EXTRA_GROUPS=1' > %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=video' >> %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=render' >> %{buildroot}/etc/adduser.conf
 
 %files
 /etc/ld.so.conf.d/10-rocm-core.conf
 /etc/udev/rules.d/70-kfd.rules
 /etc/profile.d/rocm-core.sh
+/etc/adduser.conf
+/opt/rocm
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm-core/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocm_version.h
 /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version
@@ -137,14 +143,7 @@ chmod +x %{buildroot}/etc/profile.d/rocm-core.sh
 
 %post
 /sbin/ldconfig
-ln -s /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} /opt/rocm
-echo 'ADD_EXTRA_GROUPS=1' | tee -a /etc/adduser.conf
-echo 'EXTRA_GROUPS=video' | tee -a /etc/adduser.conf
-echo 'EXTRA_GROUPS=render' | tee -a /etc/adduser.conf
 
 %postun
 /sbin/ldconfig
-rm -r /opt/rocm
-sed -i "s#EXTRA_GROUPS=video# #" "/etc/adduser.conf"
-sed -i "s#EXTRA_GROUPS=render# #" "/etc/adduser.conf"
 
