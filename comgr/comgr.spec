@@ -42,6 +42,7 @@ Requires:      rocm-device-libs
 Requires:      rocm-core
 
 Obsoletes:  	rocm-comgr
+Obsoletes:  	rocm-comgr-devel
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
