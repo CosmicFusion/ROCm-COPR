@@ -150,7 +150,7 @@ Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
 Name:          rocm-hip-runtime-devel
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}-2
+Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr.%{fedora}
 License:       NCSA
 Group:         System Environment/Libraries
