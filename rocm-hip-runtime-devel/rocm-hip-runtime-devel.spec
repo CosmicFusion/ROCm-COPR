@@ -4,7 +4,7 @@
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 79
-%global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+%global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-2
 %global ROCM_LIBPATCH_VERSION 50201
 %global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
@@ -271,7 +271,7 @@ rm -rf %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_
 
 mkdir -p %{buildroot}/etc/profile.d
 touch %{buildroot}/etc/profile.d/rocm-hip-devel.sh
-echo  "export HIP_ENV_CXX_FLAGS='-isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'"  >  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
+echo  "export HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'"  >  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 echo  'export PATH=$PATH:/opt/rocm/hip/bin' >>  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 chmod +x %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
