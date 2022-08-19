@@ -115,7 +115,7 @@ cd %{ROCM_BUILD_DIR}/rocm-smi-lib
      
     
   CXX=clang++\
-  cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocm-smi-lib" \
+  cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocm_smi_lib" \
   -DCMAKE_INSTALL_PREFIX=/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
   -DCMAKE_BUILD_TYPE=Release 
     
