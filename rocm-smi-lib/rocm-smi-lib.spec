@@ -114,7 +114,7 @@ pushd .
 cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-smi-lib/%{ROCM_PATCH_1}
 
-cd %{ROCM_GIT_DIR}/rocm-smi-lib
+cd %{ROCM_GIT_DIR}/rocm_smi_lib
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
