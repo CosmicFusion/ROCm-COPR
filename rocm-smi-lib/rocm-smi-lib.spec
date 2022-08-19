@@ -153,5 +153,3 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %postun
 /sbin/ldconfig
-Footer
-
