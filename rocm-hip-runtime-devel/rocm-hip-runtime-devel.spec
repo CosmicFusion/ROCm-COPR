@@ -115,24 +115,24 @@ BuildRequires:	python3-setuptools
 BuildRequires:	llvm-devel
 
 
-Recommends:      rocsparse
-Recommends:      rocprim
-Recommends:      rocm-core
-Recommends:      rocm-hip-runtime
-Recommends:      hipcub
-Recommends:      rocfft
-Recommends:      rocrand
-Recommends: 	hipblas
-Recommends: 	rocprim
-Recommends: 	rccl
-Recommends: 	hipfort		
-Recommends: 	rocalution
-Recommends:	rocthrust
-Recommends: 	hipsparse
-Recommends:	hipfft
+Suggests:    rocsparse
+Suggests:    rocprim
+Suggests:    hipcub
+Suggests:    rocfft
+Suggests:    rocrand
+Suggests: 	hipblas
+Suggests: 	rocprim
+Suggests: 	rccl
+Suggests: 	hipfort		
+Suggests: 	rocalution
+Suggests:	rocthrust
+Suggests: 	hipsparse
+Suggests:	hipfft
 Requires:	clang
 Requires:	llvm-libs
 Requires:	libstdc++-devel
+Requires:   rocm-core
+Requires:   rocm-hip-runtime
 
 Provides:      hip-devel
 Provides:      hip-samples
@@ -150,7 +150,7 @@ Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
 Name:          rocm-hip-runtime-devel
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.2
+Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.3
 Release:       copr.%{fedora}
 License:       NCSA
 Group:         System Environment/Libraries
