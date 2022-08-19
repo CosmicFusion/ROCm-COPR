@@ -13,6 +13,8 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_RCCL_GIT https://github.com/ROCmSoftwarePlatform/rccl
+%global ROCM_PATCH_1 include-stdlib.patch
+
 %global toolchain clang
 
 BuildRequires: clang
@@ -113,7 +115,17 @@ mkdir -p %{ROCM_BUILD_DIR}/rccl
 cd %{ROCM_BUILD_DIR}/rccl
 pushd .
 
-# Level 2 : Build
+# Level 2 : Patch
+
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rccl/%{ROCM_PATCH_1}
+
+cd %{ROCM_GIT_DIR}/rccl
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rccl
 
