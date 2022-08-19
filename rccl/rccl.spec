@@ -123,11 +123,12 @@ cd %{ROCM_BUILD_DIR}/rccl
   HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   cmake -Wno-dev -GNinja -S %{ROCM_GIT_DIR}/rccl \
   -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-  -DBUILD_TESTS=OFF
+  -DBUILD_TESTS=OFF \
+  -DTHREADS_PREFER_PTHREAD_FLAG=OFF
     
   CXX=/opt/rocm/bin/hipcc \
   HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
-  ninja -j$(nproc)
+  ninja
 
 
 
