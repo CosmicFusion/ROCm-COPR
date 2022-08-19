@@ -13,6 +13,7 @@
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_SMI_LIB_GIT https://github.com/RadeonOpenCompute/rocm_smi_lib
+%global ROCM_PATCH_1 rocm-smi-string_header.patch
 
 #%global toolchain clang
 
@@ -108,8 +109,18 @@ mkdir -p %{ROCM_BUILD_DIR}/rocm-smi-lib
 cd %{ROCM_BUILD_DIR}/rocm-smi-lib
 pushd .
 
+# Level 2 : Patch
 
-# Level 2 : Build
+cd %{ROCM_PATCH_DIR}
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-smi-lib/%{ROCM_PATCH_1}
+
+cd %{ROCM_GIT_DIR}/rocm-smi-lib
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
+
+
+
+# Level 3 : Build
 
 cd %{ROCM_BUILD_DIR}/rocm-smi-lib
 
