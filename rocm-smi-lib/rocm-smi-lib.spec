@@ -15,7 +15,7 @@
 %global ROCM_SMI_LIB_GIT https://github.com/RadeonOpenCompute/rocm_smi_lib
 %global ROCM_PATCH_1 rocm-smi-string_header.patch
 
-#%global toolchain clang
+%global toolchain clang
 
 BuildRequires: clang
 BuildRequires: ninja-build
@@ -126,8 +126,8 @@ cd %{ROCM_BUILD_DIR}/rocm-smi-lib
 
      
     
-  #CXX=clang++\
-  
+ 
+  CC=clang CXX=clang++ \
   cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm_smi_lib" \
   -DCMAKE_INSTALL_PREFIX=/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
   -DCMAKE_BUILD_TYPE=Release 
