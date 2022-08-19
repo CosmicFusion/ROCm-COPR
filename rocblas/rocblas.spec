@@ -131,10 +131,12 @@ cd %{ROCM_BUILD_DIR}/rocblas
   CXX=/opt/rocm/bin/hipcc \
   HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocBLAS" \
+ -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
  -DCMAKE_PREFIX_PATH=/opt/rocm/llvm/lib/cmake/llvm \
  -Damd_comgr_DIR=/opt/rocm/lib/cmake/amd_comgr \
  -DBUILD_WITH_TENSILE=ON \
  -DTensile_LIBRARY_FORMAT=yaml \
+ -DTensile_CPU_THREADS="$(nproc)" \
  -DTensile_CODE_OBJECT_VERSION=V3 \
  -DCMAKE_TOOLCHAIN_FILE=%{ROCM_GIT_DIR}/rocBLAS/toolchain-linux.cmake \
  -DBUILD_TESTING=OFF
