@@ -120,14 +120,13 @@ cd %{ROCM_BUILD_DIR}/rccl
      
     
   CXX=/opt/rocm/bin/hipcc \
-  HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+  HIP_ENV_CXX_FLAGS='-Wl,--allow-undefined -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   cmake -Wno-dev -GNinja -S %{ROCM_GIT_DIR}/rccl \
   -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-  -DBUILD_TESTS=OFF \
-  -Wl,--allow-undefined
+  -DBUILD_TESTS=OFF
     
   CXX=/opt/rocm/bin/hipcc \
-  HIP_ENV_CXX_FLAGS='-D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
+  HIP_ENV_CXX_FLAGS='-Wl,--allow-undefined -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   ninja
 
 
