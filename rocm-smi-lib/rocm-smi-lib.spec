@@ -101,7 +101,7 @@ mkdir -p %{ROCM_PATCH_DIR}
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_REL_TAG}" "%{ROCM_SMI_LIB_GIT}"
+git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_SMI_LIB_GIT}"
 
 mkdir -p %{ROCM_BUILD_DIR}/rocm-smi-lib
 cd %{ROCM_BUILD_DIR}/rocm-smi-lib
