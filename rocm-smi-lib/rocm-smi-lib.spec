@@ -14,7 +14,7 @@
 %global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
 %global ROCM_SMI_LIB_GIT https://github.com/RadeonOpenCompute/rocm_smi_lib
 
-%global toolchain clang
+#%global toolchain clang
 
 BuildRequires: clang
 BuildRequires: ninja-build
@@ -61,6 +61,7 @@ BuildRequires:	gcc-c++
 BuildRequires:	clang
 BuildRequires: rocminfo
 BuildRequires: comgr
+BuildRequires: texlive-pdftex
 
 Provides:      rocm-smi-lib
 Provides:      rocm-smi-lib(x86-64)
@@ -114,8 +115,9 @@ cd %{ROCM_BUILD_DIR}/rocm-smi-lib
 
      
     
-  CXX=clang++\
-  cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocm_smi_lib" \
+  #CXX=clang++\
+  
+  cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm_smi_lib" \
   -DCMAKE_INSTALL_PREFIX=/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
   -DCMAKE_BUILD_TYPE=Release 
     
