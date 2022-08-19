@@ -1,0 +1,11 @@
+diff -ruN a/src/include/BfdBacktrace.hpp b/src/include/BfdBacktrace.hpp
+--- a/src/include/BfdBacktrace.hpp	2022-08-19 20:36:30.540298393 +0300
++++ b/src/include/BfdBacktrace.hpp	2022-08-19 20:38:15.651017775 +0300
+@@ -17,6 +17,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <stdlib.h>
+ 
+ #ifdef HAVE_CPLUS_DEMANGLE
+ #define HAVE_DECL_BASENAME 1
