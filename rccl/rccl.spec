@@ -74,7 +74,7 @@ BuildRequires: gcc-gfortran
 BuildRequires: libgomp
 BuildRequires: rocm-smi-lib
 BuildRequires: gtest
-
+BuildRequires: gtest-devel
 
 Provides:      rccl
 Provides:      rccl(x86-64)
