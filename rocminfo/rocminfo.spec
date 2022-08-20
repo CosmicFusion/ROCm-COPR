@@ -32,7 +32,7 @@ Provides:      rocminfo(x86-64)
 Provides:      rocm_agent_enumerator
 Provides:      rocm_agent_enumerator(x86-64)
 Requires:      pciutils
-Requires:      hsa-rocr
+Requires:      hsa-rocr-devel
 Requires:      rocm-device-libs
 Requires:      rocm-core
 Requires:      python3
