@@ -45,12 +45,12 @@ BuildRequires:	libedit-devel
 BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
 BuildRequires:	gnupg2
-BuildRequires: hsa-rocr
+BuildRequires: hsa-rocr-devel 
 BuildRequires: rocm-llvm
 BuildRequires: rocm-core
 BuildRequires: rocm-hip-runtime-devel
 BuildRequires: rocm-hip-runtime
-BuildRequires: hsakmt-roct
+BuildRequires: hsakmt-roct-devel 
 BuildRequires: rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
