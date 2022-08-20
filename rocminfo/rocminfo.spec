@@ -44,7 +44,7 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocminfo
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
-Release:       copr.%{fedora}
+Release:       copr%{?dist}
 License:       NCSA
 Group:         System Environment/Libraries
 Summary:       ROCm info tools - rocm_agent_enumerator
