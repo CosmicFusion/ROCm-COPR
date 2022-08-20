@@ -98,12 +98,12 @@ cd %{ROCM_BUILD_DIR}/comgr
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-   /opt/rocm-5.2.1/include/amd_comgr.h
-   /opt/rocm-5.2.1/lib64/cmake/amd_comgr/amd_comgr*
-   /opt/rocm-5.2.1/lib64/libamd_comgr*
-   /opt/rocm-5.2.1/share/amd_comgr/LICENSE.txt
-   /opt/rocm-5.2.1/share/amd_comgr/NOTICES.txt
-   /opt/rocm-5.2.1/share/amd_comgr/README.md
-   /opt/rocm-5.2.1/share/doc/amd_comgr/comgr/LICENSE.txt
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/amd_comgr.h
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/amd_comgr/amd_comgr*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/libamd_comgr*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/LICENSE.txt
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/NOTICES.txt
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/README.md
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/amd_comgr/comgr/LICENSE.txt
 
 %exclude /src
