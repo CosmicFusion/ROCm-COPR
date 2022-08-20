@@ -66,23 +66,25 @@ BuildRequires:	clang
 BuildRequires: rocminfo
 BuildRequires: comgr
 
-Provides:      rocfft
-Provides:      rocfft(x86-64)
+
+Provides:      rocfft-devel
+Provides:      rocfft-devel(x86-64)
 Requires:      rocm-hip-runtime
+Requires:      rocfft
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocfft
+Name:          rocfft-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - FFT implementation
+Summary:       Radeon Open Compute - FFT development kit
 
 %description
-Radeon Open Compute - FFT implementation
+Radeon Open Compute - FFT development kit
 
 %build
 
@@ -138,17 +140,12 @@ cd %{ROCM_BUILD_DIR}/rocfft
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-
-touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
-
-echo "/opt/rocm/rocfft/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
-
 %files
-/etc/ld.so.conf.d/*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocfft/LICENSE*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocfft*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocfft_rtc_helper
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocfft/lib/cmake/rocfft*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocfft/lib/librocfft*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/rocfft/rocfft*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocfft/rocfft*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocfft*
 %exclude /src
 
 
