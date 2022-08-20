@@ -115,19 +115,7 @@ BuildRequires:	python3-setuptools
 BuildRequires:	llvm-devel
 
 
-Suggests:    rocsparse
-Suggests:    rocprim
-Suggests:    hipcub
-Suggests:    rocfft
-Suggests:    rocrand
-Suggests: 	hipblas
-Suggests: 	rocprim
-Suggests: 	rccl
-Suggests: 	hipfort		
-Suggests: 	rocalution
-Suggests:	rocthrust
-Suggests: 	hipsparse
-Suggests:	hipfft
+Suggests:    rocm-hip-libraries
 Requires:	clang
 Requires:	llvm-libs
 Requires:	libstdc++-devel
@@ -142,8 +130,7 @@ Provides:      rocm-hip-sdk
 Provides:      rocm-hip-sdk(x86-64)
 Provides:      rocm-hip-runtime-devel
 Provides:      rocm-hip-runtime-devel(x86-64)
-Provides:      rocm-hip-libraries
-Provides:      rocm-hip-libraries(x86-64)
+
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -175,14 +162,6 @@ mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROC
 touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hip-sdk
 
 echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hip-sdk
-
-## file N2 from official repos (rocm-hip-libraries) :
-
-mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
-
-touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hip-libraries
-
-echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hip-libraries
 
 # Stage 3
 
