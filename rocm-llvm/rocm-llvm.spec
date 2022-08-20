@@ -58,7 +58,7 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocm-llvm
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
-Release:       copr.%{fedora}
+Release:       copr%{?dist}
 License:       Apache 2.0 + LLVM
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - LLVM toolchain (llvm, clang, lld)
