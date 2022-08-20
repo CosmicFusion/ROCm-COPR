@@ -75,10 +75,10 @@ BuildRequires: gcc-gfortran
 BuildRequires: libgomp
 BuildRequires: rocprim-devel
 
-Provides:      rocsparse
-Provides:      rocsparse(x86-64)
+Provides:      rocsparse-devel
+Provides:      rocsparse-devel(x86-64)
 Requires:      rocm-hip-runtime
-Requires:      rocprim
+Requires:      rocsparse
 
 Recommends: gcc-gfortran
 
@@ -86,15 +86,15 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocsparse
+Name:          rocsparse-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - BLAS sparse computation
+Summary:       Radeon Open Compute - BLAS sparse computation development kit
 
 %description
-Radeon Open Compute - BLAS sparse computation
+Radeon Open Compute - BLAS sparse computation development kit
 
 %build
 
@@ -151,15 +151,13 @@ cd %{ROCM_BUILD_DIR}/rocsparse
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-touch %{buildroot}/etc/ld.so.conf.d/10-rocsparse.conf
-echo '/opt/rocm/rocsparse/lib' > %{buildroot}/etc/ld.so.conf.d/10-rocsparse.conf
-
 %files
-/etc/ld.so.conf.d/*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocsparse*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocsparse/LICENSE*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocsparse/rocsparse*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocsparse*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/cmake/rocsparse/rocsparse*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocsparse/include/rocsparse*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocsparse/lib/librocsparse*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocsparse/lib/cmake/rocsparse*
 %exclude /src
 
 
