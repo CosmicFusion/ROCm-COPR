@@ -151,7 +151,7 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocm-hip-runtime-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.4
-Release:       copr.%{fedora}
+Release:       copr%{?dist}
 License:       NCSA
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute (ROCm) HIP development kit and libraries for AMD platforms
