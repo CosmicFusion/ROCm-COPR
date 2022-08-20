@@ -79,8 +79,8 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocthrust
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
-Release:       copr.%{fedora}
-License:       Apache
+Release:       copr%{?dist}
+License:       Apache 2.0
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - Thrust parallel algorithm library
 
