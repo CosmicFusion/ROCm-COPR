@@ -36,34 +36,31 @@ BuildRequires:  rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
 
-Provides:      hsa-rocr
-Provides:      hsa-rocr(x86-64)
-Provides:      rocr-runtime
-Provides:      rocr-runtime(x86-64)
-Provides:      rocm-runtime
-Provides:      rocm-runtime(x86-64)
+Provides:      rocr-runtime-devel
+Provides:      rocr-runtime-devel(x86-64)
+Provides:      rocm-runtime-devel
+Provides:      rocm-runtime-devel(x86-64)
+Provides:      hsa-rocr-devel
+Provides:      hsa-rocr-devel(x86-64)
 Requires:      elfutils-libelf
-Requires:      hsakmt-roct
-Requires:      rocm-device-libs
-Requires:      rocm-core
-Requires:      libdrm
+Requires:      hsa-rocr
 
-Obsoletes:  	rocr-runtime
-Obsoletes:  	rocm-runtime
+Obsoletes:  	rocr-runtime-devel
+Obsoletes:  	rocm-runtime-devel
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          hsa-rocr
+Name:          hsa-rocr-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.2
 Release:       copr%{?dist}
 License:       NCSA
 Group:         System Environment/Libraries
-Summary:       ROCm Platform Runtime: ROCr a HPC market enhanced HSA based runtime
+Summary:       ROCm Platform Runtime development kit
 
 %description
-ROCm Platform Runtime: ROCr a HPC market enhanced HSA based runtime
+ROCm Platform Runtime development kit
 
 %build
 
@@ -103,7 +100,19 @@ cd %{ROCM_BUILD_DIR}/hsa-rocr
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hsa/lib/libhsa-runtime*
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime*
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/hsa-runtime64/LICENSE.md
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hsa/include/hsa
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/Brig.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/amd_hsa_common.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/amd_hsa_elf.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/amd_hsa_kernel_code.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/amd_hsa_queue.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/amd_hsa_signal.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_api_trace.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ext_amd.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ext_finalize.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ext_image.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ven_amd_aqlprofile.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsa/hsa_ven_amd_loader.h
+   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hsa-runtime64/hsa-runtime64*
 %exclude /src
