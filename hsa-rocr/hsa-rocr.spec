@@ -102,7 +102,15 @@ cd %{ROCM_BUILD_DIR}/hsa-rocr
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
+mkdir -p %{buildroot}/etc/ld.so.conf.d
+
+touch %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-rocr.conf
+
+echo "/opt/rocm/hsa/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-rocr.conf
+
+
 %files
+   /etc/ld.so.conf.d/*
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hsa/lib/libhsa-runtime*
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhsa-runtime*
    /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/hsa-runtime64/LICENSE.md
