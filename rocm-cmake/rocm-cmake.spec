@@ -35,7 +35,7 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocm-cmake
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
-Release:       copr.%{fedora}
+Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
 Summary:       CMake modules for common build tasks needed for the ROCm software stack
