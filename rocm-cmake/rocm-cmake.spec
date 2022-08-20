@@ -2,10 +2,10 @@
 
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
-%global ROCM_PATCH_VERSION 1
-%global ROCM_MAGIC_VERSION 79
+%global ROCM_PATCH_VERSION 3
+%global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
-%global ROCM_LIBPATCH_VERSION 50201
+%global ROCM_LIBPATCH_VERSION 50203
 %global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
