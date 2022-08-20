@@ -92,7 +92,7 @@ Requires(postun): /sbin/ldconfig
 BuildArch:     x86_64
 Name:          rocrand
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
-Release:       copr.%{fedora}
+Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - Pseudo-random and quasi-random number generator
