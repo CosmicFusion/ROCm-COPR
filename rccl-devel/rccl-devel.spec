@@ -1,4 +1,4 @@
-Use%undefine _auto_set_build_flags
+%undefine _auto_set_build_flags
 %define _build_id_links none
 %define _unpackaged_files_terminate_build 0
 
