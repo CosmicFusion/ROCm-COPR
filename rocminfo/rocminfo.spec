@@ -25,14 +25,14 @@ BuildRequires: pciutils-devel
 BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
-BuildRequires: hsa-rocr
+BuildRequires: hsa-rocr-devel
 
 Provides:      rocminfo
 Provides:      rocminfo(x86-64)
 Provides:      rocm_agent_enumerator
 Provides:      rocm_agent_enumerator(x86-64)
 Requires:      pciutils
-Requires:      hsa-rocr-devel
+Requires:      hsa-rocr
 Requires:      rocm-device-libs
 Requires:      rocm-core
 Requires:      python3
