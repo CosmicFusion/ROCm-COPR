@@ -35,10 +35,10 @@ BuildRequires: pciutils-devel
 BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
-BuildRequires: hsa-rocr
+BuildRequires: hsa-rocr-devel
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
-BuildRequires: hsakmt-roct
+BuildRequires: hsakmt-roct-devel
 BuildRequires: rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
