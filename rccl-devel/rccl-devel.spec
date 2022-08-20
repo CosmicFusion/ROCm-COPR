@@ -77,10 +77,11 @@ BuildRequires: rocm-smi-lib
 BuildRequires: gtest
 BuildRequires: gtest-devel
 
-Provides:      rccl
-Provides:      rccl(x86-64)
+Provides:      rccl-devel
+Provides:      rccl-devel(x86-64)
 Requires:      rocm-hip-runtime
 Requires:      rocm-smi-lib
+Requires:      rccl
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -91,10 +92,10 @@ Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 Release:       copr%{?dist}
 License:       Apache 2.0
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - Communication Collectives Library
+Summary:       Radeon Open Compute - Communication Collectives Library development kit
 
 %description
-Radeon Open Compute - Communication Collectives Library
+Radeon Open Compute - Communication Collectives Library development kit
 
 %build
 
@@ -150,16 +151,15 @@ cd %{ROCM_BUILD_DIR}/rccl
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-
-touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rccl.conf
-
-echo "/opt/rocm/rccl/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rccl.conf
-
 %files
-/etc/ld.so.conf.d/*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librccl*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rccl/LICENSE*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librccl.so
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/rccl/rccl*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}include/rccl.h
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}include/rccl/rccl.h
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rccl/lib/librccl.so
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rccl/lib/cmake/rccl/rccl*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rccl/include/rccl.h
+
 %exclude /src
 
 
