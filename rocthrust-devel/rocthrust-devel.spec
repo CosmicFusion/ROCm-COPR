@@ -45,14 +45,14 @@ BuildRequires:	libedit-devel
 BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
 BuildRequires:	gnupg2
-BuildRequires: hsa-rocr
+BuildRequires: hsa-rocr-devel
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: rocm-llvm
 BuildRequires: rocm-core
 BuildRequires: rocm-hip-runtime-devel
 BuildRequires:      rocm-hip-runtime
-BuildRequires: hsakmt-roct
+BuildRequires: hsakmt-roct-devel
 BuildRequires: rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
@@ -64,7 +64,7 @@ BuildRequires:	gcc-c++
 BuildRequires:	clang
 BuildRequires: rocminfo
 BuildRequires: comgr
-BuildRequires: rocprim
+BuildRequires: rocprim-devel
 
 Provides:      rocthrust
 Provides:      rocthrust(x86-64)
@@ -77,15 +77,15 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocthrust
+Name:          rocthrust-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr%{?dist}
 License:       Apache 2.0
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - Thrust parallel algorithm library
+Summary:       Radeon Open Compute - Thrust parallel algorithm library development kit
 
 %description
-Radeon Open Compute - Thrust parallel algorithm library
+Radeon Open Compute - Thrust parallel algorithm library and development kit
 
 %build
 
@@ -112,8 +112,8 @@ pushd .
 
 cd %{ROCM_BUILD_DIR}/rocthrust
 
-     
-    
+
+
   HIP_ENV_CXX_FLAGS=' -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
   CXX=/opt/rocm/bin/hipcc \
   cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocThrust" \
@@ -121,8 +121,8 @@ cd %{ROCM_BUILD_DIR}/rocthrust
   -Damd_comgr_DIR=/opt/rocm/lib/cmake/amd_comgr \
   -DBUILD_TEST=OFF \
   -DBUILD_BENCHMARK=OFF
-    
-    
+
+
     ninja -j$(nproc)
 
 
