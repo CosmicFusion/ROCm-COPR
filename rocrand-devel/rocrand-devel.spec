@@ -47,14 +47,14 @@ BuildRequires:	libedit-devel
 BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
 BuildRequires:	gnupg2
-BuildRequires: hsa-rocr-devel
+BuildRequires: hsa-rocr
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: rocm-llvm
 BuildRequires: rocm-core
 BuildRequires: rocm-hip-runtime-devel
 BuildRequires:      rocm-hip-runtime
-BuildRequires: hsakmt-roct-devel
+BuildRequires: hsakmt-roct
 BuildRequires: rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
@@ -75,11 +75,11 @@ BuildRequires: gcc-gfortran
 BuildRequires: libgomp
 
 
-Provides:      rocrand
-Provides:      rocrand(x86-64)
-Provides:      hiprand
-Provides:      hiprand(x86-64)
+Provides:      rocrand-devel(x86-64)
+Provides:      hiprand-devel
+Provides:      hiprand-devel(x86-64)
 Requires:      rocm-hip-runtime
+Requires:      rocrand
 
 Recommends: gcc-gfortran
 
@@ -87,15 +87,15 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocrand
+Name:          rocrand-devel
 Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - Pseudo-random and quasi-random number generator
+Summary:       Radeon Open Compute - Pseudo-random and quasi-random number generator development kit
 
 %description
-Radeon Open Compute - Pseudo-random and quasi-random number generator
+Radeon Open Compute - Pseudo-random and quasi-random number generator development kit
 
 %build
 
@@ -142,16 +142,21 @@ cd %{ROCM_BUILD_DIR}/rocrand
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-touch %{buildroot}/etc/ld.so.conf.d/10-rocrand.conf
-echo '/opt/rocm/hiprand/lib' > %{buildroot}/etc/ld.so.conf.d/10-rocrand.conf
-echo '/opt/rocm/rocrand/lib' >> %{buildroot}/etc/ld.so.conf.d/10-rocrand.conf
+ln -s "/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hiprand/include/" "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hiprand"
+
+ln -s "/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocrand/include/" "%{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocrand"
 
 %files
-/etc/ld.so.conf.d/*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/librocrand*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhiprand*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocrand/LICENSE*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/hiprand/hiprand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/rocrand/rocrand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hiprand/lib/libhiprand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocrand/lib/librocrand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hiprand/lib/cmake/hiprand/hiprand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocrand/lib/cmake/rocrand/rocrand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hiprand/include/hiprand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/rocrand/include/rocrand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hiprand*
+/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/rocrand*
 %exclude /src
 
 
