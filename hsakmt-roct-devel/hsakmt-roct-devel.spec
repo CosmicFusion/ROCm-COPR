@@ -101,7 +101,8 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
-    ninja -j$(nproc)
+
+ninja -j$(nproc)
 
 
 
@@ -110,15 +111,15 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-%{ROCM_INSTALL_DIR}include/hsakmt.h
-%{ROCM_INSTALL_DIR}include/hsakmttypes.h
-%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmt-config-version.cmake
-%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmt-config.cmake
-%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmtTargets-release.cmake
-%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmtTargets.cmake
-%{ROCM_INSTALL_DIR}lib64/libhsakmt.a
-%{ROCM_INSTALL_DIR}share/doc/hsakmt/LICENSE.md
-%{ROCM_INSTALL_DIR}share/pkgconfig/libhsakmt.pc
+%{ROCM_INSTALL_DIR}/include/hsakmt.h
+%{ROCM_INSTALL_DIR}/include/hsakmttypes.h
+%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmt-config-version.cmake
+%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmt-config.cmake
+%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmtTargets-release.cmake
+%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmtTargets.cmake
+%{ROCM_INSTALL_DIR}/lib64/libhsakmt.a
+%{ROCM_INSTALL_DIR}/share/doc/hsakmt/LICENSE.md
+%{ROCM_INSTALL_DIR}/share/pkgconfig/libhsakmt.pc
 
 %post
 /sbin/ldconfig
