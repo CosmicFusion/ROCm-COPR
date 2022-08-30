@@ -1,7 +1,7 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
-%global pkgname rocm-hsa
+%global pkgname rocm-hip
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 %global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
@@ -20,8 +20,12 @@
 %global ROCM_GIT_URL_3 https://github.com/ROCm-Developer-Tools/HIP
 %global ROCM_GIT_URL_4 https://github.com/ROCm-Developer-Tools/hipamd.git
 %global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+%global ROCM_PATCH_1 hip-gnu12-inline.patch
+%global ROCM_PATCH_2 hipcc-vars.patch
 
 %global toolchain clang
+
+Source0: %{ROCM_GIT_URL_1}/archive/%{pkgname}-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -126,13 +130,22 @@ Radeon Open Compute (ROCm) HIP development kit and libraries for AMD platforms
 
 ## file N1 from official repos (rocm-hip-runtime) :
 
-mkdir -p %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info
+mkdir -p %{buildroot}%{ROCM_INSTALL_DIR}/.info
 
-touch %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
+touch %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-hiprt
 
-echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-hiprt
 
 #
+
+## file N2 from official repos (rocm-hip-sdk) :
+
+mkdir -p %{buildroot}%{ROCM_INSTALL_DIR}/.info
+
+touch %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-hip-sdk
+
+echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-hip-sdk
+
 
 # Stage 2
 
@@ -144,43 +157,89 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# level 1 : Get Sources
+
+# URL 1 
+
+cd %{_sourcedir}
+
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCCLR_GIT}"
+rm -rf ./*
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_OCL_GIT}"
+tar -xf %{SOURCE0} -C ./
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_HIP_GIT}"
+rm %{SOURCE0}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_HAMD_GIT}"
+# URL 2 
 
-mkdir -p %{ROCM_BUILD_DIR}/rocm-hip-runtime
-cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
-pushd .
+cd %{_sourcedir}
+
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+
+cd  %{ROCM_GIT_DIR}
+
+rm -rf ./*
+
+tar -xf %{SOURCE0} -C ./
+
+rm %{SOURCE0}
+
+# URL 3
+
+cd %{_sourcedir}
+
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_3}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+
+cd  %{ROCM_GIT_DIR}
+
+rm -rf ./*
+
+tar -xf %{SOURCE0} -C ./
+
+rm %{SOURCE0}
+
+# URL 4 
+
+cd %{_sourcedir}
+
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+
+cd  %{ROCM_GIT_DIR}
+
+rm -rf ./*
+
+tar -xf %{SOURCE0} -C ./
+
+rm %{SOURCE0}
 
 # Level 2 : Patch
 
 cd %{ROCM_PATCH_DIR}
-wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip-runtime/%{ROCM_PATCH_1}
 
-cd %{ROCM_GIT_DIR}/hipamd
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip/%{ROCM_PATCH_1}
+
+cd %{ROCM_GIT_DIR}/hipamd-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
 # Level 3 : Build
 
-cd %{ROCM_BUILD_DIR}/rocm-hip-runtime
+mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
+
+cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
--DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP \
--DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime \
--DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr \
--DHIP_PLATFORM=amd
+-DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
+-DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
+-DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
+-DHIP_PLATFORM=amd \
+-DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
 #-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
 
     ninja -j$(nproc)
@@ -191,26 +250,41 @@ cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime \
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-cd %{buildroot}
+mkdir -p %{buildroot}/etc/profile.d
 
+touch %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
+echo  "export HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'"  >  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
+echo  'export PATH=$PATH:/opt/rocm/hip/bin' >>  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
+
+chmod +x %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
 
-echo "/opt/rocm/hip/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
+echo "%{ROCM_GLOBAL_DIR}/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
+
+#Level 5 : Include fix patch
+
+cd %{ROCM_PATCH_DIR}
+
+wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip/%{ROCM_PATCH_2}
+
+cd %{buildroot}%{ROCM_INSTALL_DIR}
+
+patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
 
 %files runtime
 /etc/ld.so.conf.d/10-rocm-hip.conf
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/.info/version-hiprt
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hip
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libamd*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/libhip*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/hip/lib/libamd*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/hip
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/.hipInfo
+%{ROCM_INSTALL_DIR}/.info/version-hiprt
+%{ROCM_INSTALL_DIR}/hip
+%{ROCM_INSTALL_DIR}/%{_lib}/libamd*
+%{ROCM_INSTALL_DIR}/%{_lib}/libhip*
+%{ROCM_INSTALL_DIR}/hip/%{_lib}/libamd*
+%{ROCM_INSTALL_DIR}/share/doc/hip
+%{ROCM_INSTALL_DIR}/%{_lib}/.hipInfo
 
 %files devel
 %{ROCM_INSTALL_DIR}/bin/.hipVersion
@@ -237,9 +311,9 @@ echo "/opt/rocm/hip/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj-extract
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj-ls
-%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP/run_make2cmake.cmake
-%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP/run_hipcc.cmake
-%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP/run_make2cmake.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP/run_hipcc.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP/run_make2cmake.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP/run_hipcc.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP.cmake
@@ -659,12 +733,14 @@ echo "/opt/rocm/hip/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
 %{ROCM_INSTALL_DIR}/hip/include/hip/nvcc_detail/nvidia_hip_texture_types.h
 %{ROCM_INSTALL_DIR}/hip/include/hip/nvcc_detail/nvidia_hip_unsafe_atomics.h
 %{ROCM_INSTALL_DIR}/share/hip
-%{ROCM_INSTALL_DIR}/hip/lib/cmake
+%{ROCM_INSTALL_DIR}/hip/%{_lib}/cmake
 %{ROCM_INSTALL_DIR}/include
-%{ROCM_INSTALL_DIR}/lib/cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake
 %{ROCM_INSTALL_DIR}/hip/cmake
 %{ROCM_INSTALL_DIR}/hip/bin
 %{ROCM_INSTALL_DIR}/hip/include
+%{ROCM_INSTALL_DIR}/.info/version-hip-sdk
+/etc/profile.d/rocm-hip-devel.sh
 
 %post
 /sbin/ldconfig
