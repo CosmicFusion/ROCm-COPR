@@ -19,7 +19,7 @@
 %global ROCM_GIT_URL_2 https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime.git
 %global ROCM_GIT_URL_3 https://github.com/ROCm-Developer-Tools/HIP
 %global ROCM_GIT_URL_4 https://github.com/ROCm-Developer-Tools/hipamd.git
-%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+%global ROCM_GIT_PKG_1 rocm-5.2.1.tar.gz
 %global ROCM_PATCH_1 hip-gnu12-inline.patch
 %global ROCM_PATCH_2 hipcc-vars.patch
 
@@ -225,7 +225,7 @@ cd %{ROCM_PATCH_DIR}
 
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip/%{ROCM_PATCH_1}
 
-cd %{ROCM_GIT_DIR}/hipamd-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+cd %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
@@ -237,11 +237,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-5.2.1 \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
--DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
--DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
--DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION} \
+-DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-5.2.1 \
+-DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-5.2.1 \
+-DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-5.2.1 \
 -DHIP_PLATFORM=amd \
 -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
 #-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
