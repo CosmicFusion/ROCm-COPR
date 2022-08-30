@@ -16,8 +16,9 @@
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
-%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCR-Runtime
-%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface
+#%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+%global ROCM_GIT_PKG_1 rocm-5.2.1.tar.gz
 
 %global toolchain clang
 
@@ -97,7 +98,7 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 cd %{ROCM_BUILD_DIR}/%{pkgname}
     
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCR-Runtime-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/src" \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCT-Thunk-Interface-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/src" \
     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
