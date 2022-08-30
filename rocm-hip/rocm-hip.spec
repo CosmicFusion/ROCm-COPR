@@ -185,8 +185,6 @@ ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_U
 
 cd  %{ROCM_GIT_DIR}
 
-rm -rf ./*
-
 tar -xf %{SOURCE0} -C ./
 
 rm %{SOURCE0}
@@ -199,8 +197,6 @@ ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_U
 
 cd  %{ROCM_GIT_DIR}
 
-rm -rf ./*
-
 tar -xf %{SOURCE0} -C ./
 
 rm %{SOURCE0}
@@ -212,8 +208,6 @@ cd %{_sourcedir}
 ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
 
 cd  %{ROCM_GIT_DIR}
-
-rm -rf ./*
 
 tar -xf %{SOURCE0} -C ./
 
@@ -237,7 +231,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-5.2.1 \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1 -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-5.2.1 \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
 -DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-5.2.1 \
 -DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-5.2.1 \
