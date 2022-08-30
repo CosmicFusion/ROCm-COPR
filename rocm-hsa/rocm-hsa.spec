@@ -109,7 +109,7 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# level 1 : Get Sources
 
 cd %{_sourcedir}
 
@@ -145,13 +145,11 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-rocr.conf
 
-echo "%{ROCM_GLOBAL_DIR}/hsa/%{_lib}" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-rocr.conf
-
-mv %{buildroot}/%{ROCM_INSTALL_DIR}/hsa/lib %{buildroot}/%{ROCM_INSTALL_DIR}/hsa/%{_lib}
+echo "%{ROCM_GLOBAL_DIR}/hsa/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-rocr.conf
 
 %files rocr
 /etc/ld.so.conf.d/*
-%{ROCM_INSTALL_DIR}/hsa/%{_lib}/libhsa-runtime*
+%{ROCM_INSTALL_DIR}/hsa/lib/libhsa-runtime*
 %{ROCM_INSTALL_DIR}/%{_lib}/libhsa-runtime*
 %{ROCM_INSTALL_DIR}/share/doc/hsa-runtime64/LICENSE.md
 
