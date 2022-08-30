@@ -105,7 +105,7 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
     CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -S -GNinja "%{ROCM_GIT_DIR}/ROCm-Device-Libs-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}" \
+    cmake -GNinja -S  "%{ROCM_GIT_DIR}/ROCm-Device-Libs-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DLLVM_DIR=%{ROCM_GLOBAL_DIR}/llvm/%{_lib}/cmake/llvm
