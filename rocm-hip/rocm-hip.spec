@@ -282,7 +282,7 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
 %{ROCM_INSTALL_DIR}/hip
 %{ROCM_INSTALL_DIR}/%{_lib}/libamd*
 %{ROCM_INSTALL_DIR}/%{_lib}/libhip*
-%{ROCM_INSTALL_DIR}/hip/%{_lib}/libamd*
+%{ROCM_INSTALL_DIR}/hip/lib/libamd*
 %{ROCM_INSTALL_DIR}/share/doc/hip
 %{ROCM_INSTALL_DIR}/%{_lib}/.hipInfo
 
@@ -733,7 +733,7 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
 %{ROCM_INSTALL_DIR}/hip/include/hip/nvcc_detail/nvidia_hip_texture_types.h
 %{ROCM_INSTALL_DIR}/hip/include/hip/nvcc_detail/nvidia_hip_unsafe_atomics.h
 %{ROCM_INSTALL_DIR}/share/hip
-%{ROCM_INSTALL_DIR}/hip/%{_lib}/cmake
+%{ROCM_INSTALL_DIR}/hip/lib/cmake
 %{ROCM_INSTALL_DIR}/include
 %{ROCM_INSTALL_DIR}/%{_lib}/cmake
 %{ROCM_INSTALL_DIR}/hip/cmake
