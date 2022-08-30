@@ -1,6 +1,5 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
-%define _unpackaged_files_terminate_build 0
 
 %global pkgname rocm-device-libs
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
@@ -112,12 +111,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     
 ninja -j$(nproc)
 
-mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib}
-
 # Level 4 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
+mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib}
 
 %files
 %{ROCM_INSTALL_DIR}/amdgcn/bitcode/asanrtl.bc
