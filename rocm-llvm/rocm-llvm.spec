@@ -106,6 +106,8 @@ patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
 # Level 3 : Build
 
+mkdir -p %{ROCM_BUILD_DIR}/rocm-llvm
+
 cd %{ROCM_BUILD_DIR}/rocm-llvm
 
 cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/llvm" \
