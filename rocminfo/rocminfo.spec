@@ -92,7 +92,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocminfo-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_LIBDIR='%{ROCM_INSTALL_DIR}/%{_lib}"
+    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}"
     
  ninja -j$(nproc)
 
