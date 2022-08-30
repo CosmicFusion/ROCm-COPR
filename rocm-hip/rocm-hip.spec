@@ -101,6 +101,10 @@ Provides:      hip-runtime-amd(x86-64)
 Provides:      hip-runtime-nvidia(x86-64)
 Provides:      rocm-hip-runtime
 Provides:      rocm-hip-runtime(x86-64)
+Summary:       Radeon Open Compute (ROCm) runtime for running HIP applications on the AMD platform
+
+%description runtime
+Radeon Open Compute (ROCm) runtime for running HIP applications on the AMD platform
 
 %package devel
 Suggests:    rocm-hip-libraries
