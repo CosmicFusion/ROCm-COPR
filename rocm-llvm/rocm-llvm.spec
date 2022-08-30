@@ -138,7 +138,7 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
-echo %{ROCM_GLOBAL_DIR}/llvm/%{_lib}> %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
+echo %{ROCM_GLOBAL_DIR}/llvm/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-llvm.conf
 
 %files
 /etc/ld.so.conf.d/*
