@@ -15,10 +15,10 @@
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
-%global ROCM_GIT_URL_1 https://github.com/ROCm-Developer-Tools/ROCclr.git
-%global ROCM_GIT_URL_2 https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime.git
+%global ROCM_GIT_URL_1 https://github.com/ROCm-Developer-Tools/ROCclr
+%global ROCM_GIT_URL_2 https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime
 %global ROCM_GIT_URL_3 https://github.com/ROCm-Developer-Tools/HIP
-%global ROCM_GIT_URL_4 https://github.com/ROCm-Developer-Tools/hipamd.git
+%global ROCM_GIT_URL_4 https://github.com/ROCm-Developer-Tools/hipamd
 %global ROCM_GIT_PKG_1 rocm-5.2.1.tar.gz
 %global ROCM_PATCH_1 hip-gnu12-inline.patch
 %global ROCM_PATCH_2 hipcc-vars.patch
