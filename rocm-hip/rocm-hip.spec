@@ -231,7 +231,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1 -B %{ROCM_BUILD_DIR}/rocm-hip-runtime-rocm-5.2.1 \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1 \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
 -DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-5.2.1 \
 -DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-5.2.1 \
