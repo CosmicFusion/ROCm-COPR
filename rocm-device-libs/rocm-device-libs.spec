@@ -108,7 +108,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     cmake -S -GNinja "%{ROCM_GIT_DIR}/ROCm-Device-Libs-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
-    -DLLVM_DIR=%{ROCM_GLOBAL_DIR}/llvm/lib/cmake/llvm
+    -DLLVM_DIR=%{ROCM_GLOBAL_DIR}/llvm/%{_lib}/cmake/llvm
     
 ninja -j$(nproc)
 
@@ -171,7 +171,7 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 %{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_wavefrontsize64_on.bc
 %{ROCM_INSTALL_DIR}/amdgcn/bitcode/ocml.bc
 %{ROCM_INSTALL_DIR}/amdgcn/bitcode/opencl.bc
-%{ROCM_INSTALL_DIR}/lib/cmake/AMDDeviceLibs/AMDDeviceLibsConfig.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/AMDDeviceLibs/AMDDeviceLibsConfig.cmake
 %{ROCM_INSTALL_DIR}/share/doc/ROCm-Device-Libs/rocm-device-libs/LICENSE.TXT
 
 %post
