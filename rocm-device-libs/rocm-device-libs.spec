@@ -112,7 +112,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     
 ninja -j$(nproc)
 
-mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/hsa/%{_lib}
+mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib}
 
 # Level 4 : Package
 
