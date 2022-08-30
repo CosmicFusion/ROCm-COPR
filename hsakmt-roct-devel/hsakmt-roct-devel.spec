@@ -115,11 +115,11 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 %files
 %{ROCM_INSTALL_DIR}/include/hsakmt.h
 %{ROCM_INSTALL_DIR}/include/hsakmttypes.h
-%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmt-config-version.cmake
-%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmt-config.cmake
-%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmtTargets-release.cmake
-%{ROCM_INSTALL_DIR}/lib64/cmake/hsakmt/hsakmtTargets.cmake
-%{ROCM_INSTALL_DIR}/lib64/libhsakmt.a
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmt-config-version.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmt-config.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmtTargets-release.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmtTargets.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/libhsakmt.a
 %{ROCM_INSTALL_DIR}/share/doc/hsakmt/LICENSE.md
 %{ROCM_INSTALL_DIR}/share/pkgconfig/libhsakmt.pc
 
