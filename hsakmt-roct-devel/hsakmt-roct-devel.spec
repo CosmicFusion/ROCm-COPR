@@ -2,32 +2,39 @@
 %define _build_id_links none
 %define _unpackaged_files_terminate_build 0
 
+%global pkgname hsakmt-roct-devel
+%global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+%global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+%global ROCM_GLOBAL_DIR /opt/rocm
 %global ROCM_LIBPATCH_VERSION 50203
-%global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
+%global ROCM_GIT_DIR %{builddir}/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
-%global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
-%global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
-%global ROCM_ROCT_GIT https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface
+%global ROCM_BUILD_DIR %{builddir}/rocm-build/build
+%global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCR-Runtime
+%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
 
 %global toolchain clang
 
+Source0: %{ROCM_GIT_URL_1}/archive/%{pkgname}-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+
 BuildRequires: clang
-BuildRequires: ninja-build
 BuildRequires: cmake
-BuildRequires: numactl-devel
-BuildRequires: numactl
-BuildRequires: python3
 BuildRequires: git
-BuildRequires: python3-devel
 BuildRequires: libdrm
 BuildRequires: libdrm-devel
+BuildRequires: ninja-build
+BuildRequires: numactl
+BuildRequires: numactl-devel
 BuildRequires: pciutils
 BuildRequires: pciutils-devel
+BuildRequires: python3
+BuildRequires: python3-devel
 
 Provides:      hsakmt-roct
 Provides:      hsakmt-roct(x86-64)
@@ -51,8 +58,8 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          hsakmt-roct-devel
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.2
+Name:          %{pkgname}
+Version:       %{pkgver}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
@@ -73,21 +80,25 @@ mkdir -p %{ROCM_PATCH_DIR}
 
 # level 1 : GIT Clone
 
+cd %{_sourcedir}
+
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_ROCT_GIT}"
+rm -rf ./*
 
-mkdir -p %{ROCM_BUILD_DIR}/hsakmt-roct
-cd %{ROCM_BUILD_DIR}/hsakmt-roct
-pushd .
-
+tar -xf %{SOURCE0} -C ./
 
 # Level 2 : Build
 
-cd %{ROCM_BUILD_DIR}/hsakmt-roct
+mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
+
+cd %{ROCM_BUILD_DIR}/%{pkgname}
     
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCT-Thunk-Interface" \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCT-Thunk-Interface-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}" \
+    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
     ninja -j$(nproc)
@@ -99,16 +110,15 @@ cd %{ROCM_BUILD_DIR}/hsakmt-roct
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsakmt.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/hsakmttypes.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/hsakmt/hsakmt-config-version.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/hsakmt/hsakmt-config.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/hsakmt/hsakmtTargets-release.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/hsakmt/hsakmtTargets.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/libhsakmt.a
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/hsakmt/LICENSE.md
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/pkgconfig/libhsakmt.pc
-%exclude /src
+%{ROCM_INSTALL_DIR}include/hsakmt.h
+%{ROCM_INSTALL_DIR}include/hsakmttypes.h
+%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmt-config-version.cmake
+%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmt-config.cmake
+%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmtTargets-release.cmake
+%{ROCM_INSTALL_DIR}lib64/cmake/hsakmt/hsakmtTargets.cmake
+%{ROCM_INSTALL_DIR}lib64/libhsakmt.a
+%{ROCM_INSTALL_DIR}share/doc/hsakmt/LICENSE.md
+%{ROCM_INSTALL_DIR}share/pkgconfig/libhsakmt.pc
 
 %post
 /sbin/ldconfig
