@@ -274,7 +274,7 @@ cd %{buildroot}%{ROCM_INSTALL_DIR}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
 
-mv {buildroot}%{ROCM_INSTALL_DIR}/lib {buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
+mv %{buildroot}%{ROCM_INSTALL_DIR}/lib {buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
 
 %files runtime
 /etc/ld.so.conf.d/10-rocm-hip.conf
