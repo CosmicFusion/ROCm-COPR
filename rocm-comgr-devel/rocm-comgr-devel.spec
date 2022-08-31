@@ -7,6 +7,9 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -16,12 +19,10 @@
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCm-CompilerSupport
-#%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
-%global ROCM_GIT_PKG_1 rocm-5.2.1.tar.gz
 
 %global toolchain clang
 
-Source0: %{ROCM_GIT_URL_1}/archive/%{pkgname}-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: rocm-llvm
 BuildRequires: rocm-cmake
@@ -77,15 +78,9 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
-
-cd %{_sourcedir}
-
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+# Level 1 :  Extract
 
 cd  %{ROCM_GIT_DIR}
-
-rm -rf ./*
 
 tar -xf %{SOURCE0} -C ./
 
@@ -96,7 +91,7 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
     CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-CompilerSupport-rocm-5.2.1/lib/comgr" \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-CompilerSupport-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}/lib/comgr" \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
     -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm;%{ROCM_INSTALL_DIR}" \
@@ -107,7 +102,7 @@ ninja -j$(nproc)
 
 
 
-# Level 4 : Package
+# Level 3 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 

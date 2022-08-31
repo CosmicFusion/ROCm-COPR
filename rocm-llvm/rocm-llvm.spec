@@ -7,6 +7,9 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -16,12 +19,11 @@
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/llvm-project
-%global ROCM_GIT_PKG_1 rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
 %global ROCM_PATCH_1 llvm-gnu12-inline.patch
 
 %global toolchain clang
 
-Source0: %{ROCM_GIT_URL_1}/archive/%{pkgname}-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -83,15 +85,9 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : Get Sources
-
-cd %{_sourcedir}
-
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+# Level 1 :  Extract
 
 cd  %{ROCM_GIT_DIR}
-
-rm -rf ./*
 
 tar -xf %{SOURCE0} -C ./
 
@@ -110,10 +106,9 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
-cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/llvm" \
+cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}/llvm" \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
--DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/llvm/%{_lib}" \
 -DLLVM_HOST_TRIPLE=x86_64 \
 -DLLVM_BUILD_UTILS=ON \
 -DLLVM_ENABLE_BINDINGS=OFF \

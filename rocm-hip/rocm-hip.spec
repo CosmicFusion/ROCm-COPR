@@ -7,6 +7,9 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -19,13 +22,16 @@
 %global ROCM_GIT_URL_2 https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime
 %global ROCM_GIT_URL_3 https://github.com/ROCm-Developer-Tools/HIP
 %global ROCM_GIT_URL_4 https://github.com/ROCm-Developer-Tools/hipamd
-%global ROCM_GIT_PKG_1 rocm-5.2.1.tar.gz
 %global ROCM_PATCH_1 hip-gnu12-inline.patch
 %global ROCM_PATCH_2 hipcc-vars.patch
 
 %global toolchain clang
 
-Source0: %{ROCM_GIT_URL_1}/archive/%{pkgname}-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.tar.gz
+Source0: rocclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+Source1: rocm-opencl-runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+Source2: hip-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+Source3: hipamd-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -167,7 +173,7 @@ mkdir -p %{ROCM_PATCH_DIR}
 
 cd %{_sourcedir}
 
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE0}
 
 cd  %{ROCM_GIT_DIR}
 
@@ -175,43 +181,35 @@ rm -rf ./*
 
 tar -xf %{SOURCE0} -C ./
 
-rm %{SOURCE0}
-
 # URL 2 
 
 cd %{_sourcedir}
 
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+ls %{SOURCE1} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE1}
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
-
-rm %{SOURCE0}
+tar -xf %{SOURCE1} -C ./
 
 # URL 3
 
 cd %{_sourcedir}
 
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_3}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+ls %{SOURCE2} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_3}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE2}
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
-
-rm %{SOURCE0}
+tar -xf %{SOURCE2} -C ./
 
 # URL 4 
 
 cd %{_sourcedir}
 
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/archive/%{ROCM_GIT_PKG_1} -O %{SOURCE0}
+ls %{SOURCE3} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE3}
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
-
-rm %{SOURCE0}
+tar -xf %{SOURCE3} -C ./
 
 # Level 2 : Patch
 
@@ -219,7 +217,7 @@ cd %{ROCM_PATCH_DIR}
 
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-hip/%{ROCM_PATCH_1}
 
-cd %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1
+cd %{ROCM_GIT_DIR}/hipamd-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
@@ -231,11 +229,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
 CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-5.2.1 \
+cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
--DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-5.2.1 \
--DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-5.2.1 \
--DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-5.2.1 \
+-DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}\
+-DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
+-DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
 -DHIP_PLATFORM=amd \
 -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
 #-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
