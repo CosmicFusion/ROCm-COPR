@@ -107,8 +107,8 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
 %{ROCM_INSTALL_DIR}/include/amd_comgr.h
-%{ROCM_INSTALL_DIR}/lib/cmake/amd_comgr/amd_comgr*
-%{ROCM_INSTALL_DIR}/lib/libamd_comgr*
+%{ROCM_INSTALL_DIR}/lib64/cmake/amd_comgr/amd_comgr*
+%{ROCM_INSTALL_DIR}/lib64/libamd_comgr*
 %{ROCM_INSTALL_DIR}/share/amd_comgr/LICENSE.txt
 %{ROCM_INSTALL_DIR}/share/amd_comgr/NOTICES.txt
 %{ROCM_INSTALL_DIR}/share/amd_comgr/README.md
