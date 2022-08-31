@@ -138,8 +138,13 @@ ln -s %{ROCM_INSTALL_DIR} %{buildroot}%{ROCM_GLOBAL_DIR}
 %exclude %{ROCM_INSTALL_DIR}/rocm_version.h
 
 %post
+cp /etc/adduser.conf /etc/adduser.conf.old || echo "/etc/adduser.conf doesn't exist ! , This is ok moving on"
+echo 'ADD_EXTRA_GROUPS=1' > %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=video' >> %{buildroot}/etc/adduser.conf
+echo 'EXTRA_GROUPS=render' >> %{buildroot}/etc/adduser.conf
 /sbin/ldconfig
 
 %postun
+mv /etc/adduser.conf.old /etc/adduser.conf || echo "/etc/adduser.conf.old doesn't exist ! , maybe you deleted it"
 /sbin/ldconfig
 
