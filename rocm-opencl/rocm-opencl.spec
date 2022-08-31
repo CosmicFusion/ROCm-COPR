@@ -189,7 +189,7 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 
-echo /opt/rocm/opencl/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
+echo %{ROCM_GLOBAL_DIR}/opencl/lib > %{buildroot}/etc/ld.so.conf.d/10-rocm-opencl.conf
 
 mkdir -p %{buildroot}%{ROCM_INSTALL_DIR}/.info
 

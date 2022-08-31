@@ -1,7 +1,7 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
-%global pkgname rocm-rocfft
+%global pkgname rocm-rocprim
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 %global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
@@ -78,32 +78,19 @@ Version:       %{pkgver}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
-Summary:       Radeon Open Compute - FFT implementation
+Summary:       Radeon Open Compute - HIP parallel primitives
 
 %description
-Radeon Open Compute - FFT implementation
+Radeon Open Compute - HIP parallel primitives
 
-%package runtime
-Provides:      rocfft
-Provides:      rocfft(x86-64)
+Provides:      rocprim
+Provides:      rocprim(x86-64)
+Provides:      rocprim-devel
+Provides:      rocprim-devel(x86-64)
 Requires:      rocm-hip-runtime
 
-Summary:       Radeon Open Compute - FFT implementation
-
-%package devel
-Provides:      rocfft-devel
-Provides:      rocfft-devel(x86-64)
-Requires:      rocm-hip-runtime
-Requires:      rocfft
-
-Summary:       Radeon Open Compute - FFT development kit
-
-%description runtime
-Radeon Open Compute - FFT implementation
-
-
-%description devel
-Radeon Open Compute - FFT development kit
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 
 %build
 
@@ -140,12 +127,13 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
      HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
      HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
-     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+     cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocPRIM-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+     -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
      -DCMAKE_CXX_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
      -DCMAKE_C_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
-     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-     -DAMDGPU_TARGETS="$AMDGPU_TARGETS" \
-     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
+     -Damd_comgr_DIR=%{ROCM_INSTALL_DIR}/%{_lib}/cmake/amd_comgr \
+     -DBUILD_TEST=OFF \
+     -DBUILD_BENCHMARK=OFF \
      -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}"
 
      
@@ -164,19 +152,10 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} |
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
-touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
+touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocprim.conf
 
-echo "%{ROCM_GLOBAL_DIR}/rocfft/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
+echo "%{ROCM_GLOBAL_DIR}/rocprim/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocprim.conf
 
-%files runtime
+%files
 /etc/ld.so.conf.d/*
-%{ROCM_INSTALL_DIR}/share/doc/rocfft/LICENSE*
-%{ROCM_INSTALL_DIR}/%{_lib}/librocfft*
-%{ROCM_INSTALL_DIR}/bin/rocfft_rtc_helper
-
-%files devel
-%{ROCM_INSTALL_DIR}/rocfft/lib/cmake/rocfft*
-%{ROCM_INSTALL_DIR}/rocfft/lib/librocfft*
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/rocfft/rocfft*
-%{ROCM_INSTALL_DIR}}/include/rocfft/rocfft*
-%{ROCM_INSTALL_DIR}/include/rocfft*
+%{ROCM_INSTALL_DIR}
