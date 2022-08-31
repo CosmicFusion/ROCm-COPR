@@ -95,8 +95,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
     -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm;%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_BUILD_TYPE=Release \
-#    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
+    -DCMAKE_BUILD_TYPE=Release
 
 ninja -j$(nproc)
 
@@ -106,12 +105,10 @@ ninja -j$(nproc)
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
-
 %files
 %{ROCM_INSTALL_DIR}/include/amd_comgr.h
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/amd_comgr/amd_comgr*
-%{ROCM_INSTALL_DIR}/%{_lib}/libamd_comgr*
+%{ROCM_INSTALL_DIR}/lib64/cmake/amd_comgr/amd_comgr*
+%{ROCM_INSTALL_DIR}/lib64/libamd_comgr*
 %{ROCM_INSTALL_DIR}/share/amd_comgr/LICENSE.txt
 %{ROCM_INSTALL_DIR}/share/amd_comgr/NOTICES.txt
 %{ROCM_INSTALL_DIR}/share/amd_comgr/README.md

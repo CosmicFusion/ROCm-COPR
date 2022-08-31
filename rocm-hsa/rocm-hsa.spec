@@ -127,7 +127,6 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCR-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}/src" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_CXX_FLAGS='-DNDEBUG' 
     
     
@@ -147,7 +146,7 @@ echo "%{ROCM_GLOBAL_DIR}/hsa/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-r
 %files rocr
 /etc/ld.so.conf.d/*
 %{ROCM_INSTALL_DIR}/hsa/lib/libhsa-runtime*
-%{ROCM_INSTALL_DIR}/%{_lib}/libhsa-runtime*
+%{ROCM_INSTALL_DIR}/lib/libhsa-runtime*
 %{ROCM_INSTALL_DIR}/share/doc/hsa-runtime64/LICENSE.md
 
 %files devel
@@ -165,4 +164,4 @@ echo "%{ROCM_GLOBAL_DIR}/hsa/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-r
 %{ROCM_INSTALL_DIR}/include/hsa/hsa_ext_image.h
 %{ROCM_INSTALL_DIR}/include/hsa/hsa_ven_amd_aqlprofile.h
 %{ROCM_INSTALL_DIR}/include/hsa/hsa_ven_amd_loader.h
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsa-runtime64/hsa-runtime64*
+%{ROCM_INSTALL_DIR}/lib/cmake/hsa-runtime64/hsa-runtime64*

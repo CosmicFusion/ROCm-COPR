@@ -78,7 +78,6 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_BUILD_TYPE=Release
 
 ninja -j$(nproc)

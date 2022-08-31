@@ -234,8 +234,7 @@ cmake -GNinja -S %{ROCM_GIT_DIR}/hipamd-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VE
 -DHIP_COMMON_DIR=%{ROCM_GIT_DIR}/HIP-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
 -DAMD_OPENCL_PATH=%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
 -DROCCLR_PATH=%{ROCM_GIT_DIR}/ROCclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION} \
--DHIP_PLATFORM=amd \
--DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
+-DHIP_PLATFORM=amd
 #-DOFFLOAD_ARCH_STR="$AMDGPU_TARGETS" \
 
     ninja -j$(nproc)
@@ -250,7 +249,7 @@ mkdir -p %{buildroot}/etc/profile.d
 
 touch %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
-echo  "export HIP_CXXFLAGS='-D_GNU_SRC -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'"  >  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
+echo  "export HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'"  >  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
 echo  'export PATH=$PATH:/opt/rocm/hip/bin' >>  %{buildroot}/etc/profile.d/rocm-hip-devel.sh
 
@@ -272,16 +271,16 @@ cd %{buildroot}%{ROCM_INSTALL_DIR}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
 
-mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
+mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/lib || echo "no such file or directory , moving on !"
 
 %files runtime
 /etc/ld.so.conf.d/10-rocm-hip.conf
 %{ROCM_INSTALL_DIR}/.info/version-hiprt
 %{ROCM_INSTALL_DIR}/hip/lib/libamd*
-%{ROCM_INSTALL_DIR}/%{_lib}/libamd*
-%{ROCM_INSTALL_DIR}/%{_lib}/libhip*
+%{ROCM_INSTALL_DIR}/lib/libamd*
+%{ROCM_INSTALL_DIR}/lib/libhip*
 %{ROCM_INSTALL_DIR}/share/doc/hip
-%{ROCM_INSTALL_DIR}/%{_lib}/.hipInfo
+%{ROCM_INSTALL_DIR}/lib/.hipInfo
 
 %files devel
 %{ROCM_INSTALL_DIR}/bin/.hipVersion
@@ -308,16 +307,16 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} |
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj-extract
 %{ROCM_INSTALL_DIR}/hip/bin/roc-obj-ls
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP/run_make2cmake.cmake
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP/run_hipcc.cmake
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hip/FindHIP.cmake
+%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP/run_make2cmake.cmake
+%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP/run_hipcc.cmake
+%{ROCM_INSTALL_DIR}/lib/cmake/hip/FindHIP.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP/run_make2cmake.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP/run_hipcc.cmake
 %{ROCM_INSTALL_DIR}/hip/cmake/FindHIP.cmake
 %{ROCM_INSTALL_DIR}/share/hip
 %{ROCM_INSTALL_DIR}/hip/lib/cmake
 %{ROCM_INSTALL_DIR}/include/*
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake
+%{ROCM_INSTALL_DIR}/lib/cmake
 %{ROCM_INSTALL_DIR}/hip/cmake
 %{ROCM_INSTALL_DIR}/hip/bin
 %{ROCM_INSTALL_DIR}/hip/lib/.hipInfo

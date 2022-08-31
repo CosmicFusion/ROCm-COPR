@@ -145,8 +145,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      -DCMAKE_C_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
      -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
      -DAMDGPU_TARGETS="$AMDGPU_TARGETS" \
-     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}"
+     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 
      
 
@@ -160,8 +159,6 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
-
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocfft.conf
@@ -171,12 +168,12 @@ echo "%{ROCM_GLOBAL_DIR}/rocfft/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-roc
 %files runtime
 /etc/ld.so.conf.d/*
 %{ROCM_INSTALL_DIR}/share/doc/rocfft/LICENSE*
-%{ROCM_INSTALL_DIR}/%{_lib}/librocfft*
+%{ROCM_INSTALL_DIR}/lib/librocfft*
 %{ROCM_INSTALL_DIR}/bin/rocfft_rtc_helper
 
 %files devel
 %{ROCM_INSTALL_DIR}/rocfft/lib/cmake/rocfft*
 %{ROCM_INSTALL_DIR}/rocfft/lib/librocfft*
-%{ROCM_INSTALL_DIR}/%{_lib}/cmake/rocfft/rocfft*
+%{ROCM_INSTALL_DIR}/lib/cmake/rocfft/rocfft*
 %{ROCM_INSTALL_DIR}}/include/rocfft/rocfft*
 %{ROCM_INSTALL_DIR}/include/rocfft*

@@ -115,7 +115,8 @@ echo '#endif' >> %{buildroot}%{ROCM_INSTALL_DIR}/include/rocm-core/rocm_version.
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
-echo %{ROCM_GLOBAL_DIR}/%{_lib} >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
+echo %{ROCM_GLOBAL_DIR}/lib64 >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
+echo %{ROCM_GLOBAL_DIR}/lib >> %{buildroot}/etc/ld.so.conf.d/10-rocm-core.conf
 mkdir -p %{buildroot}/etc/profile.d
 touch %{buildroot}/etc/profile.d/rocm-core.sh
 echo  "export ROC_ENABLE_PRE_VEGA=1"  >  %{buildroot}/etc/profile.d/rocm-core.sh

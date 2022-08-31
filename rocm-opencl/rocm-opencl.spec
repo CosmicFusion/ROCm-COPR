@@ -170,7 +170,6 @@ cmake -Wno-dev -GNinja -S "%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_
 -DROCCLR_PATH="%{ROCM_GIT_DIR}/ROCclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
 -DAMD_OPENCL_PATH="%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
--DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
 -DCMAKE_BUILD_TYPE=Release
     
 ninja -j$(nproc)
@@ -210,12 +209,12 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} |
 %{ROCM_INSTALL_DIR}/share/doc/opencl/LICENSE*
 %{ROCM_INSTALL_DIR}/opencl/lib/lib*
 %{ROCM_INSTALL_DIR}/opencl/bin/clinfo
-%{ROCM_INSTALL_DIR}/%{_lib}/lib*
+%{ROCM_INSTALL_DIR}/lib/lib*
 %{ROCM_INSTALL_DIR}/bin/clinfo
 # rocm-ocl-icd
 %{ROCM_INSTALL_DIR}/share/doc/rocm-ocl-icd/LICENSE*
 %{ROCM_INSTALL_DIR}/opencl/lib/libOpen*
-%{ROCM_INSTALL_DIR}/%{_lib}/libOpen*
+%{ROCM_INSTALL_DIR}/lib/libOpen*
 # rocm-opencl-runtime
 %{ROCM_INSTALL_DIR}/.info/version-oclrt
 # system
