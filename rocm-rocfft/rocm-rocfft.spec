@@ -136,7 +136,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      
    export  HIP_CFLAGS='-DD_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
      
-     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT" \
+     cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
      -DCMAKE_CXX_COMPILER=/opt/rocm/bin/hipcc \
      -DCMAKE_C_COMPILER=/opt/rocm/bin/hipcc \
      -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
