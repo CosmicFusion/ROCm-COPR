@@ -34,7 +34,7 @@ BuildRequires: pciutils-devel
 BuildRequires: python3
 BuildRequires: git
 BuildRequires: python3-devel
-BuildRequires: hsa-rocr-devel
+BuildRequires: rocm-hsa-devel
 
 Provides:      rocminfo
 Provides:      rocminfo(x86-64)

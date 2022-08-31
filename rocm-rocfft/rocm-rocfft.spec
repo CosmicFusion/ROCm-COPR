@@ -49,8 +49,8 @@ BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: gcc-plugin-devel
 BuildRequires: git
-BuildRequires: hsa-rocr-devel
-BuildRequires: hsakmt-roct-devel
+BuildRequires: rocm-hsa-devel
+BuildRequires: rocm-hsakmt-roct-devel
 BuildRequires: libdrm
 BuildRequires: libdrm-devel
 BuildRequires: libglvnd-devel

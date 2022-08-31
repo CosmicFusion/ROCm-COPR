@@ -39,7 +39,7 @@ BuildRequires: python3-devel
 BuildRequires: vim-common
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
-BuildRequires: hsakmt-roct-devel
+BuildRequires: rocm-hsakmt-roct-devel
 BuildRequires:  rocm-device-libs
 BuildRequires: libdrm-devel
 BuildRequires: libdrm
@@ -86,8 +86,8 @@ Provides:      rocr-runtime-devel
 Provides:      rocr-runtime-devel(x86-64)
 Provides:      rocm-runtime-devel
 Provides:      rocm-runtime-devel(x86-64)
-Provides:      hsa-rocr-devel
-Provides:      hsa-rocr-devel(x86-64)
+Provides:      rocm-hsa-devel
+Provides:      rocm-hsa-devel(x86-64)
 Requires:      elfutils-libelf
 Requires:      hsa-rocr
 
