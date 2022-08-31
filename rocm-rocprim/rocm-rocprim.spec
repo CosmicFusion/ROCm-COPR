@@ -123,18 +123,10 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
-   export  CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'
-     
-   export  CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'
-     
    export  HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
      
    export  HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
      
-     CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-     CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-     HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
-     HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
      cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocPRIM-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
      -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
      -DCMAKE_CXX_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
@@ -145,10 +137,6 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
      
 
-     CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-     CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-     HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
-     HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux' \
      ninja -j$(nproc)
 
 # Level 3 : Package
