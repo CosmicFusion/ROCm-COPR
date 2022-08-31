@@ -67,6 +67,10 @@ Provides:      rocr-runtime
 Provides:      rocr-runtime(x86-64)
 Provides:      rocm-runtime
 Provides:      rocm-runtime(x86-64)
+Provides:      rocm-hsa
+Provides:      rocm-hsa(x86-64)
+Provides:      rocm-hsa-rocr
+Provides:      rocm-hsa-rocr(x86-64)
 Requires:      elfutils-libelf
 Requires:      hsakmt-roct
 Requires:      rocm-device-libs
@@ -88,6 +92,10 @@ Provides:      rocm-runtime-devel
 Provides:      rocm-runtime-devel(x86-64)
 Provides:      rocm-hsa-devel
 Provides:      rocm-hsa-devel(x86-64)
+Provides:      rocm-hsa-rocr-devel
+Provides:      rocm-hsa-rocr-devel(x86-64)
+Provides:      hsa-rocr-devel
+Provides:      hsa-rocr-devel(x86-64)
 Requires:      elfutils-libelf
 Requires:      hsa-rocr
 
