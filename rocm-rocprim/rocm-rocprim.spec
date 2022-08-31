@@ -1,7 +1,7 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
-%global pkgname rocm-rocprim-devel
+%global pkgname rocm-rocprim
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 %global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
@@ -83,6 +83,9 @@ Summary:       Radeon Open Compute - HIP parallel primitives
 %description
 Radeon Open Compute - HIP parallel primitives
 
+
+
+%package devel
 Provides:      rocprim
 Provides:      rocprim(x86-64)
 Provides:      rocprim-devel
@@ -91,6 +94,11 @@ Requires:      rocm-hip-runtime
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
+
+Summary:       Radeon Open Compute - HIP parallel primitives
+
+%description devel
+Radeon Open Compute - HIP parallel primitives
 
 %build
 
@@ -133,8 +141,7 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      -DCMAKE_C_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
      -Damd_comgr_DIR=%{ROCM_INSTALL_DIR}/%{_lib}/cmake/amd_comgr \
      -DBUILD_TEST=OFF \
-     -DBUILD_BENCHMARK=OFF \
-     -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}"
+     -DBUILD_BENCHMARK=OFF 
 
      
 
@@ -148,14 +155,12 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
-
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-rocprim.conf
 
 echo "%{ROCM_GLOBAL_DIR}/rocprim/lib" > %{buildroot}/etc/ld.so.conf.d/10-rocm-rocprim.conf
 
-%files
+%files devel
 /etc/ld.so.conf.d/*
 %{ROCM_INSTALL_DIR}
