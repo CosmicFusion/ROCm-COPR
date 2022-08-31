@@ -135,11 +135,11 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : Get SRCs
+# level 1 : Get sources
 
 # URL 1 
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC0} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC0}
 
@@ -151,7 +151,7 @@ tar -xf %{SRC0} -C ./
 
 # URL 2 
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC1}
 

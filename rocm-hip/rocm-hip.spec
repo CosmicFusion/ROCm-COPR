@@ -167,11 +167,11 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : Get SRCs
+# level 1 : Get sources
 
 # URL 1 
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC0} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC0}
 
@@ -183,7 +183,7 @@ tar -xf %{SRC0} -C ./
 
 # URL 2 
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC1}
 
@@ -193,7 +193,7 @@ tar -xf %{SRC1} -C ./
 
 # URL 3
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC2} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_3}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC2}
 
@@ -203,7 +203,7 @@ tar -xf %{SRC2} -C ./
 
 # URL 4 
 
-cd %{_SRCdir}
+cd %{_sourcedir}
 
 ls %{SRC3} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC3}
 
