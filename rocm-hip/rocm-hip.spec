@@ -323,6 +323,7 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
 %{ROCM_INSTALL_DIR}/%{_lib}/cmake
 %{ROCM_INSTALL_DIR}/hip/cmake
 %{ROCM_INSTALL_DIR}/hip/bin
+%{ROCM_INSTALL_DIR}/hip/lib/.hipInfo
 %{ROCM_INSTALL_DIR}/hip/include/*
 %{ROCM_INSTALL_DIR}/.info/version-hip-sdk
 /etc/profile.d/rocm-hip-devel.sh
