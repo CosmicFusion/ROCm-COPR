@@ -1,7 +1,7 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
-%global pkgname rocm-comgr-devel
+%global pkgname rocm-comgr
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 %global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
@@ -42,6 +42,18 @@ BuildRequires: elfutils-libelf-devel
 BuildRequires: zlib-devel
 BuildRequires: rocm-device-libs
 
+BuildArch:     x86_64
+Name:          %{pkgname}
+Version:       %{pkgver}
+Release:       copr%{?dist}
+License:       NCSA
+Group:         System Environment/Libraries
+Summary:       Radeon Open Compute - compiler support
+
+%description
+Radeon Open Compute - compiler support
+
+%package devel
 Provides:      comgr
 Provides:      comgr(x86-64)
 Provides:      rocm-comgr
@@ -57,15 +69,9 @@ Obsoletes:  	rocm-comgr-devel
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
-BuildArch:     x86_64
-Name:          %{pkgname}
-Version:       %{pkgver}
-Release:       copr%{?dist}
-License:       NCSA
-Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - compiler support
 
-%description
+%description devel
 Radeon Open Compute - compiler support
 
 %build
@@ -105,7 +111,7 @@ ninja -j$(nproc)
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-%files
+%files devel
 %{ROCM_INSTALL_DIR}/include/amd_comgr.h
 %{ROCM_INSTALL_DIR}/lib64/cmake/amd_comgr/amd_comgr*
 %{ROCM_INSTALL_DIR}/lib64/libamd_comgr*
