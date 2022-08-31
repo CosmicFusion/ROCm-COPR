@@ -179,7 +179,7 @@ cd  %{ROCM_GIT_DIR}
 
 rm -rf ./*
 
-tar -xf %{SRC0} -C ./
+tar -xf %{_sourcedir}/%{SRC0} -C ./
 
 # URL 2 
 
@@ -189,7 +189,7 @@ ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SRC1} -C ./
+tar -xf %{_sourcedir}/%{SRC1} -C ./
 
 # URL 3
 
@@ -199,7 +199,7 @@ ls %{SRC2} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_3}/
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SRC2} -C ./
+tar -xf %{_sourcedir}/%{SRC2} -C ./
 
 # URL 4 
 
@@ -209,7 +209,7 @@ ls %{SRC3} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_4}/
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SRC3} -C ./
+tar -xf %{_sourcedir}/%{SRC3} -C ./
 
 # Level 2 : Patch
 

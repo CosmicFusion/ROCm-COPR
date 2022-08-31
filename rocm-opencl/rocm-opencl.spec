@@ -147,7 +147,7 @@ cd  %{ROCM_GIT_DIR}
 
 rm -rf ./*
 
-tar -xf %{SRC0} -C ./
+tar -xf %{_sourcedir}/%{SRC0} -C ./
 
 # URL 2 
 
@@ -157,7 +157,7 @@ ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SRC1} -C ./
+tar -xf %{_sourcedir}/%{SRC1} -C ./
 
 # Level 2 : Build
 
