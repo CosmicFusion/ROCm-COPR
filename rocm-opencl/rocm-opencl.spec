@@ -80,7 +80,7 @@ BuildArch:     x86_64
 Name:          %{pkgname}
 Version:       %{pkgver}
 Release:       copr%{?dist}
-License:       NCSA
+License:       MIT
 Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - OpenCL runtime
 
