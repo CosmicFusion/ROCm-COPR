@@ -52,7 +52,7 @@ BuildRequires:	python3-setuptools
 BuildRequires:	python3-sphinx
 BuildRequires:	valgrind-devel
 BuildRequires:	zlib-devel
-BuildRequires:      comgr
+BuildRequires: rocm-comgr-devel
 BuildRequires: clang
 BuildRequires: cmake
 BuildRequires: doxygen
@@ -95,7 +95,7 @@ Radeon Open Compute (ROCm) runtime for running HIP applications on the AMD platf
 
 %package runtime
 Requires:      elfutils-libelf
-Requires:      comgr
+Requires:      rocm-comgr-devel
 Requires:      rocm-core
 Requires:      rocm-llvm
 Requires:      rocminfo
@@ -272,7 +272,7 @@ cd %{buildroot}%{ROCM_INSTALL_DIR}
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_2}"
 
-mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib}
+mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
 
 %files runtime
 /etc/ld.so.conf.d/10-rocm-hip.conf
