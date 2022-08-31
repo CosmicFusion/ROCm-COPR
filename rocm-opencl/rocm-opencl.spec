@@ -23,8 +23,8 @@
 
 %global toolchain clang
 
-Source0: rocclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
-Source1: rocm-opencl-runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+%global SRC0 rocclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
+%global SRC1 rocm-opencl-runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 
 BuildRequires:	binutils-devel
@@ -135,29 +135,29 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : Get Sources
+# level 1 : Get SRCs
 
 # URL 1 
 
-cd %{_sourcedir}
+cd %{_SRCdir}
 
-ls %{SOURCE0} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE0}
+ls %{SRC0} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC0}
 
 cd  %{ROCM_GIT_DIR}
 
 rm -rf ./*
 
-tar -xf %{SOURCE0} -C ./
+tar -xf %{SRC0} -C ./
 
 # URL 2 
 
-cd %{_sourcedir}
+cd %{_SRCdir}
 
-ls %{SOURCE1} || echo "Source 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SOURCE1}
+ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC1}
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE1} -C ./
+tar -xf %{SRC1} -C ./
 
 # Level 2 : Build
 
