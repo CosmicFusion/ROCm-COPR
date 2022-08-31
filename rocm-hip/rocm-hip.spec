@@ -277,7 +277,6 @@ mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} |
 %files runtime
 /etc/ld.so.conf.d/10-rocm-hip.conf
 %{ROCM_INSTALL_DIR}/.info/version-hiprt
-%{ROCM_INSTALL_DIR}/hip
 %{ROCM_INSTALL_DIR}/hip/lib/libamd*
 %{ROCM_INSTALL_DIR}/%{_lib}/libamd*
 %{ROCM_INSTALL_DIR}/%{_lib}/libhip*
