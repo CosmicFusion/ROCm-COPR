@@ -262,7 +262,7 @@ mkdir -p %{buildroot}/etc/ld.so.conf.d
 
 touch %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
 
-echo "%{ROCM_GLOBAL_DIR}/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
+echo "%{ROCM_GLOBAL_DIR}/hip/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hip.conf
 
 #Level 5 : Include fix patch
 
