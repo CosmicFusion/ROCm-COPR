@@ -16,8 +16,8 @@ diff '--color=auto' -uraN a/bin/hipcc.pl b/bin/hipcc.pl
      }
 -    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
 -    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
-+    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_CXXFLAGS\" ";
-+    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_CFLAGS\" ";
++    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" $HIP_CXXFLAGS\ ";
++    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" $HIP_CFLAGS\ ";
      $HIPLDFLAGS .= " -L\"$HIP_LIB_PATH\"";
      if ($isWindows) {
        $HIPLDFLAGS .= " -lamdhip64";
@@ -37,7 +37,7 @@ diff '--color=auto' -uraN a/bin/hipconfig.pl b/bin/hipconfig.pl
          $CPP_CONFIG .= " -I\"$HIP_PATH_INCLUDE\" -I\"$HIP_CLANG_INCLUDE\"";
      } else {
 -        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include";
-+        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include \"$HIP_CFLAGS\" ";
++        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include $HIP_CFLAGS\ ";
      }
  }
  if ($HIP_PLATFORM eq "nvidia") {

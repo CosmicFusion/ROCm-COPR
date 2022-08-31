@@ -202,8 +202,6 @@ touch %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-ocl-sdk
 
 echo "%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}-%{ROCM_MAGIC_VERSION}" > %{buildroot}%{ROCM_INSTALL_DIR}/.info/version-ocl-sdk
 
-mv %{buildroot}%{ROCM_INSTALL_DIR}/lib %{buildroot}%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
-
 %files runtime
 # rocm-opencl
 %{ROCM_INSTALL_DIR}/share/doc/opencl/LICENSE*
