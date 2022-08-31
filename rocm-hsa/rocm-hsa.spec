@@ -146,7 +146,7 @@ echo "%{ROCM_GLOBAL_DIR}/hsa/lib" >> %{buildroot}/etc/ld.so.conf.d/10-rocm-hsa-r
 %files rocr
 /etc/ld.so.conf.d/*
 %{ROCM_INSTALL_DIR}/hsa/lib/libhsa-runtime*
-%{ROCM_INSTALL_DIR}/lib64/libhsa-runtime*
+%{ROCM_INSTALL_DIR}/lib/libhsa-runtime*
 %{ROCM_INSTALL_DIR}/share/doc/hsa-runtime64/LICENSE.md
 
 %files devel
