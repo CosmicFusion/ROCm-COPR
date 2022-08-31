@@ -1,7 +1,7 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
-%global pkgname rocminfo
+%global pkgname rocm-hsakmt-roct-devel
 %global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
 %global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
@@ -9,7 +9,7 @@
 %global ROCM_PATCH_VERSION 3
 %global GIT_MAJOR_VERSION 5
 %global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 3
+%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -18,34 +18,42 @@
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
-%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/rocminfo
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface
 
 %global toolchain clang
 
 Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: clang
-BuildRequires: rocm-cmake
-BuildRequires: ninja-build
 BuildRequires: cmake
-BuildRequires: libstdc++-devel
+BuildRequires: git
+BuildRequires: libdrm
+BuildRequires: libdrm-devel
+BuildRequires: ninja-build
+BuildRequires: numactl
 BuildRequires: numactl-devel
+BuildRequires: pciutils
 BuildRequires: pciutils-devel
 BuildRequires: python3
-BuildRequires: git
 BuildRequires: python3-devel
-BuildRequires: rocm-hsa-devel
 
-Provides:      rocminfo
-Provides:      rocminfo(x86-64)
-Provides:      rocm_agent_enumerator
-Provides:      rocm_agent_enumerator(x86-64)
+Provides:      hsakmt-roct
+Provides:      hsakmt-roct(x86-64)
+Provides:      roct-thunk-interface
+Provides:      roct-thunk-interface(x86-64)
+Provides:      hsakmt-devel
+Provides:      hsakmt-devel(x86-64)
+Provides:      hsakmt
+Provides:      hsakmt(x86-64)
+Provides:      hsakmt-roct-devel
+Provides:      hsakmt-roct-devel(x86-64)
+Requires:      libdrm
+Requires:      numactl
 Requires:      pciutils
-Requires:      hsa-rocr
-Requires:      rocm-device-libs
 Requires:      rocm-core
-Requires:      python3
-Requires:	kmod
+
+Obsoletes: hsakmt
+Obsoletes: hsakmt-devel
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -54,12 +62,12 @@ BuildArch:     x86_64
 Name:          %{pkgname}
 Version:       %{pkgver}
 Release:       copr%{?dist}
-License:       NCSA
+License:       MIT
 Group:         System Environment/Libraries
-Summary:       ROCm info tools - rocm_agent_enumerator
+Summary:       Radeon Open Compute Thunk Interface
 
 %description
-ROCm info tools - rocm_agent_enumerator
+Radeon Open Compute Thunk Interface
 
 %build
 
@@ -82,22 +90,34 @@ tar -xf %{SOURCE0} -C ./
 mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
 cd %{ROCM_BUILD_DIR}/%{pkgname}
-
-
-    CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocminfo-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
-    -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}"
     
- ninja -j$(nproc)
+    CC=/usr/bin/clang CXX=/usr/bin/clang++ \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCT-Thunk-Interface-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
+    -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
+    -DCMAKE_BUILD_TYPE=Release
+
+ninja -j$(nproc)
+
+
 
 # Level 3 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocm_agent_enumerator
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/bin/rocminfo
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocminfo/License.txt
-%exclude /src
+%{ROCM_INSTALL_DIR}/include/hsakmt.h
+%{ROCM_INSTALL_DIR}/include/hsakmttypes.h
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmt-config-version.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmt-config.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmtTargets-release.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/hsakmt/hsakmtTargets.cmake
+%{ROCM_INSTALL_DIR}/%{_lib}/libhsakmt.a
+%{ROCM_INSTALL_DIR}/share/doc/hsakmt/LICENSE.md
+%{ROCM_INSTALL_DIR}/share/pkgconfig/libhsakmt.pc
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig

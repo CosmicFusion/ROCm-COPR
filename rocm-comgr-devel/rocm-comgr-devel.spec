@@ -1,18 +1,28 @@
+%undefine _auto_set_build_flags
 %define _build_id_links none
 
-%undefine _auto_set_build_flags
-
+%global pkgname rocm-comgr-devel
+%global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+%global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+%global ROCM_GLOBAL_DIR /opt/rocm
 %global ROCM_LIBPATCH_VERSION 50203
-%global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
+%global ROCM_GIT_DIR %{builddir}/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
-%global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
-%global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
-%global ROCM_COMGR_GIT https://github.com/RadeonOpenCompute/ROCm-CompilerSupport
+%global ROCM_BUILD_DIR %{builddir}/rocm-build/build
+%global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCm-CompilerSupport
+
+%global toolchain clang
+
+Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: rocm-llvm
 BuildRequires: rocm-cmake
@@ -30,7 +40,7 @@ BuildRequires: vim-common
 BuildRequires: elfutils-libelf
 BuildRequires: elfutils-libelf-devel
 BuildRequires: zlib-devel
-BuildRequires:      rocm-device-libs
+BuildRequires: rocm-device-libs
 
 Provides:      comgr
 Provides:      comgr(x86-64)
@@ -48,8 +58,8 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          comgr
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}.2
+Name:          %{pkgname}
+Version:       %{pkgver}
 Release:       copr%{?dist}
 License:       NCSA
 Group:         System Environment/Libraries
@@ -68,42 +78,41 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# Level 1 :  Extract
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_COMGR_GIT}"
-
-mkdir -p %{ROCM_BUILD_DIR}/comgr
-cd %{ROCM_BUILD_DIR}/comgr
-pushd .
-
+tar -xf %{SOURCE0} -C ./
 
 # Level 2 : Build
 
-cd %{ROCM_BUILD_DIR}/comgr
+mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
+
+cd %{ROCM_BUILD_DIR}/%{pkgname}
 
     CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-CompilerSupport/lib/comgr" \
-    -B build -Wno-dev \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/ROCm-CompilerSupport-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}/lib/comgr" \
+    -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
-    -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm;%{ROCM_INSTALL_DIR}"
-    cd ./build
-    ninja -j$(nproc)
+    -DCMAKE_PREFIX_PATH="%{ROCM_INSTALL_DIR}/llvm;%{ROCM_INSTALL_DIR}" \
+    -DCMAKE_BUILD_TYPE=Release \
+#    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
+
+ninja -j$(nproc)
 
 
 
-# Level 4 : Package
+# Level 3 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-%files
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/include/amd_comgr.h
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/cmake/amd_comgr/amd_comgr*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib64/libamd_comgr*
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/LICENSE.txt
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/NOTICES.txt
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/amd_comgr/README.md
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/amd_comgr/comgr/LICENSE.txt
+mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib} || echo "no such file or directory , moving on !"
 
-%exclude /src
+%files
+%{ROCM_INSTALL_DIR}/include/amd_comgr.h
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/amd_comgr/amd_comgr*
+%{ROCM_INSTALL_DIR}/%{_lib}/libamd_comgr*
+%{ROCM_INSTALL_DIR}/share/amd_comgr/LICENSE.txt
+%{ROCM_INSTALL_DIR}/share/amd_comgr/NOTICES.txt
+%{ROCM_INSTALL_DIR}/share/amd_comgr/README.md
+%{ROCM_INSTALL_DIR}/share/doc/amd_comgr/comgr/LICENSE.txt

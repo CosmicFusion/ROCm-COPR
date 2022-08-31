@@ -1,0 +1,56 @@
+diff '--color=auto' -uraN a/bin/hipcc.pl b/bin/hipcc.pl
+--- a/bin/hipcc.pl	2022-08-12 23:24:41.839873569 +0300
++++ b/bin/hipcc.pl	2022-08-30 23:31:54.718057376 +0300
+@@ -105,6 +105,8 @@
+ $HIP_VERSION    =   $hipvars::HIP_VERSION;
+ $HSA_PATH       =   $hipvars::HSA_PATH;
+ $HIP_ROCCLR_HOME =   $hipvars::HIP_ROCCLR_HOME;
++$HIP_CXXFLAGS = $hipvars::HIP_CXXFLAGS;
++$HIP_CFLAGS = $hipvars::HIP_CFLAGS;
+ 
+ if ($HIP_PLATFORM eq "amd") {
+   # If using ROCclr runtime, need to find HIP_ROCCLR_HOME
+@@ -188,8 +190,8 @@
+     } else {
+       $HIPCXXFLAGS .= " -std=c++11";
+     }
+-    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
+-    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\"";
++    $HIPCXXFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_CXXFLAGS\" ";
++    $HIPCFLAGS .= " -isystem \"$HIP_CLANG_INCLUDE_PATH/..\" \"$HIP_CFLAGS\" ";
+     $HIPLDFLAGS .= " -L\"$HIP_LIB_PATH\"";
+     if ($isWindows) {
+       $HIPLDFLAGS .= " -lamdhip64";
+diff '--color=auto' -uraN a/bin/hipconfig.pl b/bin/hipconfig.pl
+--- a/bin/hipconfig.pl	2022-08-12 23:24:38.582886230 +0300
++++ b/bin/hipconfig.pl	2022-08-30 23:32:37.353925718 +0300
+@@ -47,6 +47,7 @@
+ $ROCM_PATH      =   $hipvars::ROCM_PATH;
+ $HIP_VERSION    =   $hipvars::HIP_VERSION;
+ $HSA_PATH       =   $hipvars::HSA_PATH;
++$HIP_CFLAGS = $hipvars::HIP_CFLAGS;
+ 
+ Getopt::Long::Configure ( qw{bundling no_ignore_case});
+ GetOptions(
+@@ -81,7 +82,7 @@
+     if($isWindows) {
+         $CPP_CONFIG .= " -I\"$HIP_PATH_INCLUDE\" -I\"$HIP_CLANG_INCLUDE\"";
+     } else {
+-        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include";
++        $CPP_CONFIG .= " -I$HIP_PATH_INCLUDE -I$HIP_CLANG_INCLUDE -I$HSA_PATH/include \"$HIP_CFLAGS\" ";
+     }
+ }
+ if ($HIP_PLATFORM eq "nvidia") {
+diff '--color=auto' -uraN a/bin/hipvars.pm b/bin/hipvars.pm
+--- a/bin/hipvars.pm	2022-08-12 23:24:47.710850750 +0300
++++ b/bin/hipvars.pm	2022-08-30 23:43:57.523825483 +0300
+@@ -107,6 +107,9 @@
+ # Prioritize Env first, otherwise use the hipInfo config file
+ $HIP_COMPILER = $ENV{'HIP_COMPILER'} // $hipInfo{'HIP_COMPILER'} // "clang";
+ $HIP_RUNTIME = $ENV{'HIP_RUNTIME'} // $hipInfo{'HIP_RUNTIME'} // "rocclr";
++# You may need to add additional flags to hipcc , so this ENV VAR was patched in
++$HIP_CXXFLAGS = $ENV{'HIP_CXXFLAGS'} // $ENV{'CXXFLAGS'} // -D_GNU_SOURCE  ;
++$HIP_CFLAGS = $ENV{'HIP_CFLAGS'} // $ENV{'CFLAGS'} // -D_GNU_SOURCE ;
+ 
+ # If using ROCclr runtime, need to find HIP_ROCCLR_HOME
+ if (defined $HIP_RUNTIME and $HIP_RUNTIME eq "rocclr" and !defined $HIP_ROCCLR_HOME) {

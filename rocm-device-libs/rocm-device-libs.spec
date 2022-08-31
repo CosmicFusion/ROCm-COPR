@@ -1,18 +1,28 @@
 %undefine _auto_set_build_flags
 %define _build_id_links none
 
+%global pkgname rocm-device-libs
+%global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+%global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+%global ROCM_GLOBAL_DIR /opt/rocm
 %global ROCM_LIBPATCH_VERSION 50203
-%global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
+%global ROCM_GIT_DIR %{builddir}/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
-%global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
-%global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
-%global ROCM_RDL_GIT https://github.com/RadeonOpenCompute/ROCm-Device-Libs
-%global ROCM_PATCH_1 Use-defined-linux-inc-path.patch
+%global ROCM_BUILD_DIR %{builddir}/rocm-build/build
+%global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/ROCm-Device-Libs
+
+%global toolchain clang
+
+Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: libstdc++-devel
 BuildRequires: clang
@@ -57,8 +67,8 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocm-device-libs
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+Name:          %{pkgname}
+Version:       %{pkgver}
 Release:       copr%{?dist}
 License:       NCSA
 Group:         System Environment/Libraries
@@ -77,96 +87,86 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# Level 1 :  Extract
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_RDL_GIT}"
+tar -xf %{SOURCE0} -C ./
 
-mkdir -p %{ROCM_BUILD_DIR}/rocm-device-libs
-cd %{ROCM_BUILD_DIR}/rocm-device-libs
-pushd .
+# Level 2 : Build
 
-# Level 2 : Apply redhat path patch
+mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
-cd %{ROCM_PATCH_DIR}
-#wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-device-libs/%{ROCM_PATCH_1}
-cd %{ROCM_GIT_DIR}/ROCm-Device-Libs
-git reset --hard
-#git apply %{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}
+cd %{ROCM_BUILD_DIR}/%{pkgname}
 
-# Level 3 : Build
-
-cd %{ROCM_BUILD_DIR}/rocm-device-libs
-
-    CC=/opt/rocm/llvm/bin/clang CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
-    cmake -S "%{ROCM_GIT_DIR}/ROCm-Device-Libs" \
+    CC=/opt/rocm/llvm/bin/clang CXX=/opt/rocm/llvm/bin/clang++ CXXFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' CFLAGS='-I/usr/include -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux' \
+    cmake -GNinja -S  "%{ROCM_GIT_DIR}/ROCm-Device-Libs-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-    -DLLVM_DIR=/opt/rocm/llvm/lib/cmake/llvm
-    make -j$(nproc)
+    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
+    -DLLVM_DIR=%{ROCM_GLOBAL_DIR}/llvm/%{_lib}/cmake/llvm
+    
+ninja -j$(nproc)
 
+# Level 3 : Package
 
+DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
-# Level 4 : Package
-
-DESTDIR="%{buildroot}" make -j$(nproc) install
-
+mv %{buildroot}/%{ROCM_INSTALL_DIR}/lib %{buildroot}/%{ROCM_INSTALL_DIR}/%{_lib}
 
 %files
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/asanrtl.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/hip.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/ockl.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_abi_version_400.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_abi_version_500.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_correctly_rounded_sqrt_off.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_correctly_rounded_sqrt_on.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_daz_opt_off.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_daz_opt_on.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_finite_only_off.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_finite_only_on.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1010.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1011.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1012.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1013.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1030.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1031.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1032.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1033.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1034.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1035.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_1036.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_600.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_601.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_602.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_700.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_701.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_702.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_703.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_704.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_705.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_801.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_802.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_803.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_805.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_810.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_900.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_902.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_904.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_906.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_908.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_909.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_90a.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_90c.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_isa_version_940.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_unsafe_math_off.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_unsafe_math_on.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_wavefrontsize64_off.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/oclc_wavefrontsize64_on.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/ocml.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/amdgcn/bitcode/opencl.bc
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/lib/cmake/AMDDeviceLibs/AMDDeviceLibsConfig.cmake
-   /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/ROCm-Device-Libs/rocm-device-libs/LICENSE.TXT
-%exclude /src
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/asanrtl.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/hip.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/ockl.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_abi_version_400.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_abi_version_500.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_correctly_rounded_sqrt_off.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_correctly_rounded_sqrt_on.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_daz_opt_off.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_daz_opt_on.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_finite_only_off.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_finite_only_on.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1010.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1011.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1012.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1013.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1030.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1031.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1032.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1033.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1034.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1035.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_1036.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_600.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_601.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_602.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_700.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_701.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_702.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_703.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_704.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_705.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_801.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_802.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_803.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_805.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_810.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_900.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_902.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_904.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_906.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_908.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_909.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_90a.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_90c.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_isa_version_940.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_unsafe_math_off.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_unsafe_math_on.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_wavefrontsize64_off.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/oclc_wavefrontsize64_on.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/ocml.bc
+%{ROCM_INSTALL_DIR}/amdgcn/bitcode/opencl.bc
+%{ROCM_INSTALL_DIR}/%{_lib}/cmake/AMDDeviceLibs/AMDDeviceLibsConfig.cmake
+%{ROCM_INSTALL_DIR}/share/doc/ROCm-Device-Libs/rocm-device-libs/LICENSE.TXT
 
 %post
 /sbin/ldconfig

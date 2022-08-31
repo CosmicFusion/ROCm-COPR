@@ -1,18 +1,28 @@
+%undefine _auto_set_build_flags
 %define _build_id_links none
 
+%global pkgname rocm-cmake
+%global pkgver %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+%global builddir %{_builddir}/%{pkgname}-%{pkgver}
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
+%global GIT_MAJOR_VERSION 5
+%global GIT_MINOR_VERSION 2
+%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+%global ROCM_GLOBAL_DIR /opt/rocm
 %global ROCM_LIBPATCH_VERSION 50203
-%global ROCM_GIT_DIR %{buildroot}/src/rocm-build/git
+%global ROCM_GIT_DIR %{builddir}/rocm-build/git
 %global ROCM_GIT_TAG rocm-5.2.x
-%global ROCM_BUILD_DIR %{buildroot}/src/rocm-build/build
-%global ROCM_PATCH_DIR %{buildroot}/src/rocm-build/patch
-%global ROCM_CMAKE_GIT https://github.com/RadeonOpenCompute/rocm-cmake
+%global ROCM_BUILD_DIR %{builddir}/rocm-build/build
+%global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
+%global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/rocm-cmake
 
 %global toolchain clang
+
+Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: clang
 BuildRequires: ninja-build
@@ -33,8 +43,8 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 BuildArch:     x86_64
-Name:          rocm-cmake
-Version:       %{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}.%{ROCM_LIBPATCH_VERSION}
+Name:          %{pkgname}
+Version:       %{pkgver}
 Release:       copr%{?dist}
 License:       MIT
 Group:         System Environment/Libraries
@@ -53,55 +63,51 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : GIT Clone
+# Level 1 :  Extract
 
 cd  %{ROCM_GIT_DIR}
 
-git clone -b "%{ROCM_GIT_TAG}" "%{ROCM_CMAKE_GIT}"
-
-mkdir -p %{ROCM_BUILD_DIR}/rocm-cmake
-cd %{ROCM_BUILD_DIR}/rocm-cmake
-pushd .
-
+tar -xf %{SOURCE0} -C ./
 
 # Level 2 : Build
 
-cd %{ROCM_BUILD_DIR}/rocm-cmake
+mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
+
+cd %{ROCM_BUILD_DIR}/%{pkgname}
 
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake" \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
+    -DCMAKE_INSTALL_LIBDIR="%{ROCM_INSTALL_DIR}/%{_lib}" \
     -DCMAKE_BUILD_TYPE=Release
-    ninja -j$(nproc)
 
+ninja -j$(nproc)
 
-
-# Level 4 : Package
+# Level 3 : Package
 
 DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/doc/rocm-cmake/LICENSE
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMAnalyzers.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMCheckTargetIds.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMChecks.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMClangTidy.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMClients.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMConfig.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMConfigVersion.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMCppCheck.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMCreatePackage.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMDocs.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMDoxygenDoc.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMHeaderWrapper.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMInstallSymlinks.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMInstallTargets.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMPackageConfigHelpers.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMSetupVersion.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMSphinxDoc.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/ROCMUtilities.cmake
-/opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}/share/rocm/cmake/header_template.h.in
-%exclude /src
+%{ROCM_INSTALL_DIR}/share/doc/rocm-cmake/LICENSE
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMAnalyzers.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMCheckTargetIds.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMChecks.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMClangTidy.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMClients.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMConfig.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMConfigVersion.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMCppCheck.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMCreatePackage.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMDocs.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMDoxygenDoc.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMHeaderWrapper.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMInstallSymlinks.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMInstallTargets.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMPackageConfigHelpers.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMSetupVersion.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMSphinxDoc.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/ROCMUtilities.cmake
+%{ROCM_INSTALL_DIR}/share/rocm/cmake/header_template.h.in
 
 %post
 /sbin/ldconfig
