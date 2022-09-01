@@ -177,7 +177,7 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 %files devel 
 %{ROCM_INSTALL_DIR}/rocm_smi/include/*
 %{ROCM_INSTALL_DIR}/oam/include/*
-%{ROCM_INSTALL_DIR}/lib/lib/cmake/*
+%{ROCM_INSTALL_DIR}/lib/cmake/*
 %{ROCM_INSTALL_DIR}/include/*
 
 %post
