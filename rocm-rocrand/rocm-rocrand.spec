@@ -81,6 +81,18 @@ BuildRequires: wget
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
+BuildArch:     x86_64
+Name:          %{pkgname}
+Version:       %{pkgver}
+Release:       copr%{?dist}
+License:       MIT
+Group:         System Environment/Libraries
+Summary:       Radeon Open Compute - Pseudo-random and quasi-random number generator
+
+%description
+Radeon Open Compute - Pseudo-random and quasi-random number generator
+
+%package runtime 
 Provides:      rocrand
 Provides:      rocrand(x86-64)
 Provides:      hiprand
@@ -92,16 +104,11 @@ Recommends: gcc-gfortran
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
-BuildArch:     x86_64
-Name:          %{pkgname}
-Version:       %{pkgver}
-Release:       copr%{?dist}
-License:       MIT
-Group:         System Environment/Libraries
 Summary:       Radeon Open Compute - Pseudo-random and quasi-random number generator
 
-%description
+%description runtime
 Radeon Open Compute - Pseudo-random and quasi-random number generator
+
 
 %package devel
 Provides:      rocrand-devel(x86-64)
@@ -154,13 +161,14 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
-export  HIP_CXXFLAGS=' -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
+export  HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
   
 export  CXX=%{ROCM_GLOBAL_DIR}/bin/hipcc
   
   cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
   -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
-  -DBUILD_TEST=OFF \
+  -DCMAKE_TOOLCHAIN_FILE="%{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}"/toolchain-linux.cmake \
+  -DBUILD_TEST=OFF
 
 
 
@@ -184,11 +192,11 @@ ln -s "%{ROCM_INSTALL_DIR}/hiprand/include/" "%{buildroot}%{ROCM_INSTALL_DIR}/in
 
 ln -s "%{ROCM_INSTALL_DIR}/rocrand/include/" "%{buildroot}%{ROCM_INSTALL_DIR}/include/rocrand"
 
-%files 
+%files runtime
 /etc/ld.so.conf.d/*
 %{ROCM_INSTALL_DIR}/lib/librocrand*
 %{ROCM_INSTALL_DIR}/lib/libhiprand*
-%{ROCM_INSTALL_DIR}/LICENSE*
+%{ROCM_INSTALL_DIR}/share/doc/rocrand/LICENSE*
 
 %files devel
 %{ROCM_INSTALL_DIR}/lib/cmake/hiprand/hiprand*
