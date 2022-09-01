@@ -67,7 +67,7 @@ BuildRequires: rocm-device-libs
 BuildRequires: rocm-hip-runtime
 BuildRequires: rocm-hip-devel
 BuildRequires: rocm-llvm
-BuildRequires: rocminfo
+#BuildRequires: rocminfo
 BuildRequires: wget
 
 
