@@ -60,11 +60,12 @@ BuildRequires: numactl-devel
 BuildRequires: perl
 BuildRequires: python3
 BuildRequires: python3-devel
+BuildRequires: rocm-cmake
 BuildRequires: rocm-comgr-devel
 BuildRequires: rocm-core
 BuildRequires: rocm-device-libs
 BuildRequires: rocm-hip-runtime
-BuildRequires: rocm-hip-runtime-devel
+BuildRequires: rocm-hip-devel
 BuildRequires: rocm-llvm
 BuildRequires: rocminfo
 BuildRequires: wget
@@ -133,6 +134,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      
    export  HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
      
+   export CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'
+   
+   export CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'  
+     
+   export AMDGPU_TARGETS="gfx803"  
 
      cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
      -DCMAKE_CXX_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
@@ -144,11 +150,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      
 
 
-#ninja -j$(nproc)
+ninja -j$(nproc)
 
 # Level 3 : Package
 
-DESTDIR="%{buildroot}" ninja -j$(nproc) install || echo 'if the error is "/sys/class/kfd/kfd/topology/nodes/" related , ingnore this you are good to go! '
+DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 mkdir -p %{buildroot}/etc/ld.so.conf.d
 
