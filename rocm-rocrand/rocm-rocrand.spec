@@ -159,7 +159,7 @@ export  HIP_CXXFLAGS=' -D_GNU_SOURCE -stdlib=libstdc++ -isystem /usr/include/c++
 export  CXX=%{ROCM_GLOBAL_DIR}/bin/hipcc
   
   cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
-  -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR}
+  -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
   -DBUILD_TEST=OFF \
 
 
