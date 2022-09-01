@@ -9,7 +9,7 @@
 %global ROCM_PATCH_VERSION 3
 %global GIT_MAJOR_VERSION 5
 %global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 1
+%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -24,7 +24,6 @@
 %global toolchain clang
 
 %global SRC0 rocrand-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
-%global SRC1 hiprand-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -145,13 +144,9 @@ tar -xf %{_sourcedir}/%{SRC0} -C ./
 
 # URL 2 
 
-cd %{_sourcedir}
+cd  %{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION
 
-ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC1}
-
-cd  %{ROCM_GIT_DIR}
-
-tar -xf %{_sourcedir}/%{SRC1} -C ./
+git clone %{ROCM_GIT_URL_2}
 
 # Level 2 : Build
 
