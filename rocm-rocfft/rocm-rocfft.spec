@@ -137,7 +137,9 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
    export CXX=%{ROCM_GLOBAL_DIR}/bin/hipcc
    
    export CC=%{ROCM_GLOBAL_DIR}/bin/hipcc
-     
+   
+   export AMDGPU_TARGETS=gfx803
+   
      cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
      -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
      -DAMDGPU_TARGETS="$AMDGPU_TARGETS" \
