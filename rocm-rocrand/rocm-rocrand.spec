@@ -144,7 +144,7 @@ tar -xf %{_sourcedir}/%{SRC0} -C ./
 
 # URL 2 
 
-cd  %{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION
+cd  %{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}
 
 git clone %{ROCM_GIT_URL_2}
 
