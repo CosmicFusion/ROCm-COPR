@@ -137,14 +137,13 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
    export CXXFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'
    
    export CFLAGS='-D_GNU_SOURCE  -I/usr/include/c++/12 -I/usr/include/c++/12/x86_64-redhat-linux'  
+ 
+   export CXX=%{ROCM_GLOBAL_DIR}/bin/hipcc
+   
+   export CC=%{ROCM_GLOBAL_DIR}/bin/hipcc
      
-   export AMDGPU_TARGETS="gfx803"  
-
      cmake -GNinja -S "%{ROCM_GIT_DIR}/rocFFT-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
-     -DCMAKE_CXX_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
-     -DCMAKE_C_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
      -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
-     -DAMDGPU_TARGETS="$AMDGPU_TARGETS" \
      -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 
      
