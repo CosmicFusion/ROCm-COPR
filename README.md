@@ -49,16 +49,16 @@ this ability can be leveraged by these 2 env vars
 for CXX
 
 ```
-HIP_ENV_CXX_FLAGS
+HIP_CXXFLAGS
 ```
 
 for C
 
 ```
-HIP_ENV_CC_FLAGS
+HIP_CFLAGS
 ```
 
-Use the the same way you use regular C & CXX flags.
+Use the the same way you use regular C & CXX flags. , we also made it fallback to regular C & CXX flags in-case the env vars were missing .
 
 See the [official documentation](https://docs.amd.com/bundle/ROCm-Compiler-Reference-Guide-v5.2/page/Appendix_A.html) for a full list.
 
