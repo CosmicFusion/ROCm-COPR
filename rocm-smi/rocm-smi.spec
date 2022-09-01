@@ -168,14 +168,14 @@ DESTDIR="%{buildroot}" ninja -j$(nproc) install
 
 %files lib
 %{ROCM_INSTALL_DIR}/share/*
-%{ROCM_INSTALL_DIR}/rocm-smi/lib/*
+%{ROCM_INSTALL_DIR}/rocm_smi/lib/*
 %{ROCM_INSTALL_DIR}/oam/lib/*
 %{ROCM_INSTALL_DIR}/libexec/rocm_smi/*
 %{ROCM_INSTALL_DIR}/lib/lib*
 %{ROCM_INSTALL_DIR}/bin/rocm-smi
 
 %files devel 
-%{ROCM_INSTALL_DIR}/rocm-smi/include/*
+%{ROCM_INSTALL_DIR}/rocm_smi/include/*
 %{ROCM_INSTALL_DIR}/oam/include/*
 %{ROCM_INSTALL_DIR}/lib/lib/cmake/*
 %{ROCM_INSTALL_DIR}/include/*
