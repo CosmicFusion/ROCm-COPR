@@ -143,7 +143,7 @@ git clone -b %{ROCM_GIT_REL_TAG} %{ROCM_GIT_URL_1}
 
 # 
 
-cd  %{ROCM_GIT_DIR}
+cd  %{ROCM_GIT_DIR}/rocRAND
 
 git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_2}
 
