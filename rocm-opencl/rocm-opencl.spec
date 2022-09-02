@@ -7,9 +7,6 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
-%global GIT_MAJOR_VERSION 5
-%global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -20,12 +17,9 @@
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/ROCm-Developer-Tools/ROCclr
 %global ROCM_GIT_URL_2 https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 %global toolchain clang
-
-%global SRC0 rocclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
-%global SRC1 rocm-opencl-runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
-
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -135,29 +129,17 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# level 1 : Get sources
-
-# URL 1 
-
-cd %{_sourcedir}
-
-ls %{SRC0} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC0}
+# Level 1 :  Sources
 
 cd  %{ROCM_GIT_DIR}
 
-rm -rf ./*
+git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_1}
 
-tar -xf %{_sourcedir}/%{SRC0} -C ./
-
-# URL 2 
-
-cd %{_sourcedir}
-
-ls %{SRC1} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_2}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC1}
+#
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{_sourcedir}/%{SRC1} -C ./
+git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_2}
 
 # Level 2 : Build
 
@@ -166,9 +148,9 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
 CC=clang CXX=clang++ \
-cmake -Wno-dev -GNinja -S "%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
--DROCCLR_PATH="%{ROCM_GIT_DIR}/ROCclr-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
--DAMD_OPENCL_PATH="%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+cmake -Wno-dev -GNinja -S "%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime" \
+-DROCCLR_PATH="%{ROCM_GIT_DIR}/ROCclr-rocm" \
+-DAMD_OPENCL_PATH="%{ROCM_GIT_DIR}/ROCm-OpenCL-Runtime" \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
 -DCMAKE_BUILD_TYPE=Release
     

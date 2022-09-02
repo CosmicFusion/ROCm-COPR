@@ -7,9 +7,6 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
-%global GIT_MAJOR_VERSION 5
-%global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 1
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -19,10 +16,9 @@
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/rocm-cmake
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 %global toolchain clang
-
-Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires: clang
 BuildRequires: ninja-build
@@ -63,11 +59,11 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# Level 1 :  Extract
+# Level 1 :  Sources
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
+git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_1}
 
 # Level 2 : Build
 
@@ -76,7 +72,7 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
     CC=/usr/bin/clang CXX=/usr/bin/clang++ \
-    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+    cmake -GNinja -S "%{ROCM_GIT_DIR}/rocm-cmake" \
     -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}" \
     -DCMAKE_BUILD_TYPE=Release
 

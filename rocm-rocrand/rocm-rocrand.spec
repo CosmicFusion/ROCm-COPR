@@ -7,9 +7,6 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
-%global GIT_MAJOR_VERSION 5
-%global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -20,10 +17,9 @@
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/ROCmSoftwarePlatform/rocRAND
 %global ROCM_GIT_URL_2 https://github.com/ROCmSoftwarePlatform/hipRAND
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 %global toolchain clang
-
-%global SRC0 rocrand-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -139,21 +135,18 @@ mkdir -p %{ROCM_PATCH_DIR}
 
 # URL 1 
 
-cd %{_sourcedir}
-
-ls %{SRC0} || echo "SRC 0 missing. Downloading NOW !" && wget %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz -O %{SRC0}
+# Level 1 :  Sources
 
 cd  %{ROCM_GIT_DIR}
 
-rm -rf ./*
+git clone -b %{ROCM_GIT_REL_TAG} %{ROCM_GIT_URL_1}
 
-tar -xf %{_sourcedir}/%{SRC0} -C ./
+# 
 
-# URL 2 
+cd  %{ROCM_GIT_DIR}/rocRAND
 
-cd  %{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}
+git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_2}
 
-git clone %{ROCM_GIT_URL_2}
 
 # Level 2 : Build
 
@@ -165,9 +158,8 @@ export  HIP_CXXFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/i
   
 export  CXX=%{ROCM_GLOBAL_DIR}/bin/hipcc
   
-  cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+  cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocRAND" \
   -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
-  -DCMAKE_TOOLCHAIN_FILE="%{ROCM_GIT_DIR}/rocRAND-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}"/toolchain-linux.cmake \
   -DBUILD_TEST=OFF
 
 
