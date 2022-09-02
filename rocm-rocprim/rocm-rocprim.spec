@@ -7,9 +7,6 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
-%global GIT_MAJOR_VERSION 5
-%global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -19,10 +16,9 @@
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1  https://github.com/ROCmSoftwarePlatform/rocPRIM
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 %global toolchain clang
-
-Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -110,11 +106,12 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# Level 1 :  Extract
+# Level 1 :  Sources
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
+git clone -b %{ROCM_GIT_REL_TAG} %{ROCM_GIT_URL_1}
+
 
 
 # Level 2 : Build
@@ -127,11 +124,11 @@ cd %{ROCM_BUILD_DIR}/%{pkgname}
      
    export  HIP_CFLAGS='-D_GNU_SOURCE -isystem /usr/include/c++/12 -isystem /usr/include/c++/12/x86_64-redhat-linux'
      
-     cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocPRIM-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}" \
+     cmake -Wno-dev  -GNinja -S "%{ROCM_GIT_DIR}/rocPRIM" \
      -DCMAKE_INSTALL_PREFIX=%{ROCM_INSTALL_DIR} \
      -DCMAKE_CXX_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
      -DCMAKE_C_COMPILER=%{ROCM_GLOBAL_DIR}/bin/hipcc \
-     -Damd_comgr_DIR=%{ROCM_INSTALL_DIR}/%{_lib}/cmake/amd_comgr \
+     -Damd_comgr_DIR=%{ROCM_INSTALL_DIR}/lib/cmake/amd_comgr \
      -DBUILD_TEST=OFF \
      -DBUILD_BENCHMARK=OFF 
 

@@ -7,9 +7,6 @@
 %global ROCM_MAJOR_VERSION 5
 %global ROCM_MINOR_VERSION 2
 %global ROCM_PATCH_VERSION 3
-%global GIT_MAJOR_VERSION 5
-%global GIT_MINOR_VERSION 2
-%global GIT_PATCH_VERSION 3
 %global ROCM_MAGIC_VERSION 109
 %global ROCM_INSTALL_DIR /opt/rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
 %global ROCM_GLOBAL_DIR /opt/rocm
@@ -20,10 +17,9 @@
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
 %global ROCM_GIT_URL_1 https://github.com/RadeonOpenCompute/llvm-project
 %global ROCM_PATCH_1 llvm-gnu12-inline.patch
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 %global toolchain clang
-
-Source0: %{ROCM_GIT_URL_1}/archive/rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}.tar.gz
 
 BuildRequires:	binutils-devel
 BuildRequires:	clang
@@ -85,18 +81,18 @@ mkdir -p %{ROCM_BUILD_DIR}
 
 mkdir -p %{ROCM_PATCH_DIR}
 
-# Level 1 :  Extract
+# Level 1 :  Sources
 
 cd  %{ROCM_GIT_DIR}
 
-tar -xf %{SOURCE0} -C ./
+git clone -b %{ROCM_GIT_TAG} %{ROCM_GIT_URL_1}
 
 # Level 2 : Patch
 
 cd %{ROCM_PATCH_DIR}
 wget https://raw.githubusercontent.com/CosmicFusion/ROCm-COPR/main/rocm-llvm/%{ROCM_PATCH_1}
 
-cd %{ROCM_GIT_DIR}/llvm-project-rocm-%{ROCM_MAJOR_VERSION}.%{ROCM_MINOR_VERSION}.%{ROCM_PATCH_VERSION}
+cd %{ROCM_GIT_DIR}/llvm-project
 
 patch -Np1 -i "%{ROCM_PATCH_DIR}/%{ROCM_PATCH_1}"
 
@@ -106,7 +102,7 @@ mkdir -p %{ROCM_BUILD_DIR}/%{pkgname}
 
 cd %{ROCM_BUILD_DIR}/%{pkgname}
 
-cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project-rocm-%{GIT_MAJOR_VERSION}.%{GIT_MINOR_VERSION}.%{GIT_PATCH_VERSION}/llvm" \
+cmake -GNinja -S "%{ROCM_GIT_DIR}/llvm-project/llvm" \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX="%{ROCM_INSTALL_DIR}/llvm" \
 -DLLVM_HOST_TRIPLE=x86_64 \

@@ -15,7 +15,7 @@
 %global ROCM_GIT_TAG rocm-5.2.x
 %global ROCM_BUILD_DIR %{builddir}/rocm-build/build
 %global ROCM_PATCH_DIR %{builddir}/rocm-build/patch
-
+%global ROCM_GIT_REL_TAG "release/rocm-rel-5.2"
 
 BuildRequires: wget
 
